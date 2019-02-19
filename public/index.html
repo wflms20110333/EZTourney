@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Register for tournaments easily">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>EZTourney</title>
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Material Design Lite -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
+        <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+        <!-- App Styling -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="styles/main.css">
+    </head>
+    <body>
+        <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+            <!-- Header section containing logo -->
+            <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+                <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+                <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                    <h3><img src="images/logo.png" alt="Logo" height="32" width="41" style="margin-top: -8px"> EZTourney</h3>
+                </div>
+                <div id="userContainer">
+                    <div hidden id="userEmail"></div>
+                    <button hidden id="signOut" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                        Sign-out
+                    </button>
+                </div>
+                </div>
+            </header>
+
+            <!-- Login screen -->
+            <div hidden class="formContainer" id="loginScreen">
+                <div class="inputForm">
+                    <h2>Welcome</h2>
+                    <h1>Login</h1>
+                    <p>You're seeing this because you have not signed in yet. Please login with your MIT email!</p>
+                    <input class="inputText" id="email" type="text" placeholder="Username (Email)"/>
+                    <input class="inputText" id="password" type="password" placeholder="Password" />
+                    <a class="button" target="_blank" id="signIn">Sign in</a>
+                    <a class="button" target="_blank" id="register" style="margin-top: 10px">Register</a>
+                </div>
+                <p id="load">Firebase SDK Loading&hellip;</p>
+            </div>
+
+            <!-- Snackbar notifications -->
+            <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+
+            <!-- Athlete Information -->
+            <div hidden class="formContainer" id="athleteScreen">
+                <div class="inputForm">
+                    <h1>Athlete Information</h1>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Name</div>
+                        <input class="inputText" id="name" type="text"/>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Year</div>
+                        <select id="year">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="grad">Grad</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Gender</div>
+                        <select id="gender">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Kerberos</div>
+                        <input class="inputText" id="kerberos" type="text"/>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Cell Phone Number</div>
+                        <input class="inputText" id="phoneNumber" type="tel"/>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Belt Rank (ex. green-blue is green)</div>
+                        <select id="belt">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="white">White</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="green">Green</option>
+                            <option value="blue">Blue</option>
+                            <option value="red">Red</option>
+                            <option value="black">Black</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Weight Division</div>
+                        <select id="weightDivision">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="light">Light (women: ≤117, men: ≤145)</option>
+                            <option value="middle">Middle (women: 117-137, men: 145-172)</option>
+                            <option value="heavy">Heavy (women: >137, men: >172)</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Weight</div>
+                        <input class="inputText" id="weight" type="number"/>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Emergency Contact Name</div>
+                        <input class="inputText" id="emergencyContactName" type="text"/>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Emergency Contact Phone</div>
+                        <input class="inputText" id="emergencyContactPhone" type="tel"/>
+                    </div>
+                    
+                    <a class="button" target="_blank" id="updateInformation">Update Information</a>
+                </div>
+
+                <div class="inputForm">
+                    <h1>Equipment Sizes</h1>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Hogu Size</div>
+                        <select id="hoguSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Helmet Size</div>
+                        <select id="helmetSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+                    
+                    <div class="personalInfo">
+                        <div class="infoLabel">Arm Guards Size</div>
+                        <select id="armGuardsSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Shin Guards Size</div>
+                        <select id="shinGuardsSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Feet Protectors/E-Socks Size</div>
+                        <select id="socksSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+
+                    <div class="personalInfo">
+                        <div class="infoLabel">Gloves Size</div>
+                        <select id="glovesSize">
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                            <option value=5>5</option>
+                        </select>
+                    </div>
+                    <a class="button" target="_blank" id="updateSizes">Update Equipment Sizes</a>
+                </div>
+                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+            </div>
+
+            <!--main class="mdl-layout__content mdl-color--grey-100">
+                <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
+
+                
+
+                <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+
+                </div>
+            </main-->
+        </div>
+
+        <!-- Firebase initialization code -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+                // // The Firebase SDK is initialized and available here!
+                //
+                // firebase.auth().onAuthStateChanged(user => { });
+                // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+                // firebase.messaging().requestPermission().then(() => { });
+                // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+                //
+                // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        
+                try {
+                let app = firebase.app();
+                let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+                document.getElementById('load').innerHTML = 'Copyright \u00A9 2019 MIT Sport Taekwondo';// `Firebase SDK loaded with ${features.join(', ')}`;
+                } catch (e) {
+                console.error(e);
+                document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+                }
+            });
+        </script>
+
+        <!-- Import and configure the Firebase SDK -->
+        <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
+        <!-- If you do not want to serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
+        <script src="/__/firebase/5.7.3/firebase-app.js"></script>
+        <script src="/__/firebase/5.7.3/firebase-auth.js"></script>
+        <script src="/__/firebase/5.7.3/firebase-storage.js"></script>
+        <script src="/__/firebase/5.7.3/firebase-messaging.js"></script>
+        <script src="/__/firebase/5.7.3/firebase-firestore.js"></script>
+        <script src="/__/firebase/init.js"></script>
+
+        <script src="scripts/main.js"></script>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+{
+    "name": "EZTourney",
+    "short_name": "EZTourney",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait"
+}
