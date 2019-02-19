@@ -36,20 +36,19 @@ function signOut() {
 function register() {
     var email = emailInputElement.value;
     var password = passwordInputElement.value;
-    console.log(email);
     if (blankCredentials(email, password))
         return;
-    console.log('TRIGGERED');
     if (invalidCredentials(email, password))
         return;
-    console.log('yay');
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(smth) {
+        addNewAthlete();
+    }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ...
+        if (errorCode == 'auth/email-already-in-use')
+            snackbar('The email address is already in use by another account');
     });
-    console.log('hi');
 }
 
 // Add a new athlete entry to the Firebase database.
@@ -66,12 +65,12 @@ function addNewAthlete() {
         weight: -1,
         emergencyContactName: "",
         emergencyContactPhone: "",
-        hoguSize: -1,
-        helmetSize: -1,
-        armGuardsSize: -1,
-        shinGuardsSize: -1,
-        socksSize: -1,
-        glovesSize: -1
+        hoguSize: 0,
+        helmetSize: 0,
+        armGuardsSize: 0,
+        shinGuardsSize: 0,
+        socksSize: 0,
+        glovesSize: 0
     }).catch(function(error) {
         console.error("Error writing new athlete's information to Firebase Database", error);
     });
@@ -133,35 +132,41 @@ function authStateObserver(user) {
         userEmailElement.removeAttribute('hidden');
         signOutButtonElement.removeAttribute('hidden');
 
-        // if is not admin
+        // Show other screens
+        // TODO: if is not admin
         athleteScreenElement.removeAttribute('hidden');
+        loadAthleteInformation();
 
-        // Hide login screen.
+        // Hide login screen
         loginScreenElement.setAttribute('hidden', 'true');
     } else { // User is signed out!
         // Hide user's profile and sign-out button.
         userEmailElement.setAttribute('hidden', 'true');
         signOutButtonElement.setAttribute('hidden', 'true');
+
+        // Hide other screens
         athleteScreenElement.setAttribute('hidden', 'true');
 
-        // Show sign-in button.
+        // Show login screen
         loginScreenElement.removeAttribute('hidden');
     }
 }
 
 // Updates an athlete's information.
 function updateInformation() {
-    var name = document.getElementById('name').value;
-    var year = document.getElementById('year').value;
-    var gender = document.getElementById('gender').value;
-    var kerberos = document.getElementById('kerberos').value;
-    var phoneNumber = document.getElementById('phoneNumber').value;
-    var belt = document.getElementById('belt').value;
-    var weightDivision = document.getElementById('weightDivision').value;
-    var weight = document.getElementById('weight').value;
-    var emergencyContactName = document.getElementById('emergencyContactName').value;
-    var emergencyContactPhone = document.getElementById('emergencyContactPhone').value;
+    // retrieve values
+    var name = athleteNameElement.value;
+    var year = athleteYearElement.value;
+    var gender = athleteGenderElement.value;
+    var kerberos = athleteKerberosElement.value;
+    var phoneNumber = athletePhoneNumberElement.value;
+    var belt = athleteBeltElement.value;
+    var weightDivision = athleteWeightDivisionElement.value;
+    var weight = athleteWeightElement.value;
+    var emergencyContactName = athleteEmergencyContactNameElement.value;
+    var emergencyContactPhone = athleteEmergencyContactPhoneElement.value;
 
+    // check for invalid form
     if (name == "" ||
         year == "" ||
         gender == "" ||
@@ -177,23 +182,6 @@ function updateInformation() {
     }
 
     // submit data
-    firestore.doc('/athletes/' + getUserEmail()).get().then(function(doc) {
-        if (!doc.exists) {
-            addNewAthlete();
-            console.log("new athlete added");
-        }
-    });
-
-    firestore.doc('/athletes/' + getUserEmail()).get().then(function(doc) {
-        if (!doc.exists) {
-            console.log("this is wrong");
-        }
-        else {
-            console.log("this is right");
-        }
-    });
-
-
     firestore.doc('/athletes/' + getUserEmail()).update({
         name: name,
         year: year,
@@ -215,52 +203,60 @@ function updateInformation() {
     });
 }
 
-const firestore = firebase.firestore();
-const settings = {
-    timestampsInSnapshots: true
-};
-firestore.settings(settings);
+// Updates an athlete's equipment sizes.
+function updateSizes() {
+    // retrieve values
+    var hoguSize = hoguSizeElement.value;
+    var helmetSize = helmetSizeElement.value;
+    var armGuardsSize = armGuardsSizeElement.value;
+    var shinGuardsSize = shinGuardsSizeElement.value;
+    var socksSize = socksSizeElement.value;
+    var glovesSize = glovesSizeElement.value;
 
-var loginScreenElement = document.getElementById('loginScreen');
-var emailInputElement = document.getElementById('email');
-var passwordInputElement = document.getElementById('password');
-var signInButtonElement = document.getElementById('signIn');
-var registerButtonElement = document.getElementById('register');
-
-var snackbarElement = document.getElementById('snackbar');
-
-var userEmailElement = document.getElementById('userEmail');
-var signOutButtonElement = document.getElementById('signOut');
-
-var athleteScreenElement = document.getElementById('athleteScreen');
-var updateAthleteInformationElement = document.getElementById('updateInformation');
-
-signInButtonElement.addEventListener('click', signIn);
-signOutButtonElement.addEventListener('click', signOut);
-registerButtonElement.addEventListener('click', register);
-updateAthleteInformationElement.addEventListener('click', updateInformation);
-
-// initialize Firebase
-initFirebaseAuth();
-
-
-function test() {
-    var athletesRef = firestore.collection("athletes");
-
-    athletesRef.doc("SF").set({
-    name: "San Francisco", state: "CA", country: "USA",
-    capital: false, population: 860000,
-    regions: ["west_coast", "norcal"] });
-
-    var docRef = firestore.collection("athletes").doc("SF");
-
-    docRef.update({
-        state: "TX"
+    // submit data
+    firestore.doc('/athletes/' + getUserEmail()).update({
+        hoguSize: hoguSize,
+        helmetSize: helmetSize,
+        armGuardsSize: armGuardsSize,
+        shinGuardsSize: shinGuardsSize,
+        socksSize: socksSize,
+        glovesSize: glovesSize
     })
+    .then(function() {
+        snackbar('Equipment sizes updated!');
+    })
+    .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+    });
+}
 
-    docRef.get().then(function(doc) {
+// Loads database information into forms
+function loadAthleteInformation() {
+    firestore.doc('/athletes/' + getUserEmail()).get().then(function(doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
+            // retrieve the document's data
+            var data = doc.data();
+
+            // Athlete information elements
+            athleteNameElement.value = data.name;
+            athleteYearElement.value = data.year;
+            athleteGenderElement.value = data.gender;
+            athleteKerberosElement.value = data.kerberos;
+            athletePhoneNumberElement.value = data.phoneNumber;
+            athleteBeltElement.value = data.belt;
+            athleteWeightDivisionElement.value = data.weightDivision;
+            athleteWeightElement.value = data.weight;
+            athleteEmergencyContactNameElement.value = data.emergencyContactName;
+            athleteEmergencyContactPhoneElement.value = data.emergencyContactPhone
+
+            // Equipment sizes elements
+            hoguSizeElement.value = data.hoguSize;
+            helmetSizeElement.value = data.helmetSize;
+            armGuardsSizeElement.value = data.armGuardsSize;
+            shinGuardsSizeElement.value = data.shinGuardsSize;
+            socksSizeElement.value = data.socksSize;
+            glovesSizeElement.value = data.glovesSize;
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -269,3 +265,61 @@ function test() {
         console.log("Error getting document:", error);
     });
 }
+
+/*************************************************************************************************/
+
+// some basic settings for firebase/firestore
+const firestore = firebase.firestore();
+const settings = {
+    timestampsInSnapshots: true
+};
+firestore.settings(settings);
+
+// The snackbar
+var snackbarElement = document.getElementById('snackbar');
+
+// Login elements
+var loginScreenElement = document.getElementById('loginScreen');
+var emailInputElement = document.getElementById('email');
+var passwordInputElement = document.getElementById('password');
+var signInButtonElement = document.getElementById('signIn');
+var registerButtonElement = document.getElementById('register');
+
+// Logout elements
+var userEmailElement = document.getElementById('userEmail');
+var signOutButtonElement = document.getElementById('signOut');
+
+// Athlete screen elements
+var athleteScreenElement = document.getElementById('athleteScreen');
+var updateAthleteInformationElement = document.getElementById('updateInformation');
+var updateEquipmentSizesElement = document.getElementById('updateSizes');
+
+// Athlete information elements
+var athleteNameElement = document.getElementById('name');
+var athleteYearElement = document.getElementById('year');
+var athleteGenderElement = document.getElementById('gender');
+var athleteKerberosElement = document.getElementById('kerberos');
+var athletePhoneNumberElement = document.getElementById('phoneNumber');
+var athleteBeltElement = document.getElementById('belt');
+var athleteWeightDivisionElement = document.getElementById('weightDivision');
+var athleteWeightElement = document.getElementById('weight');
+var athleteEmergencyContactNameElement = document.getElementById('emergencyContactName');
+var athleteEmergencyContactPhoneElement = document.getElementById('emergencyContactPhone');
+
+// Equipment sizes elements
+var hoguSizeElement = document.getElementById('hoguSize');
+var helmetSizeElement = document.getElementById('helmetSize');
+var armGuardsSizeElement = document.getElementById('armGuardsSize');
+var shinGuardsSizeElement = document.getElementById('shinGuardsSize');
+var socksSizeElement = document.getElementById('socksSize');
+var glovesSizeElement = document.getElementById('glovesSize');
+
+// Attach onclick methods for buttons
+signInButtonElement.addEventListener('click', signIn);
+signOutButtonElement.addEventListener('click', signOut);
+registerButtonElement.addEventListener('click', register);
+updateAthleteInformationElement.addEventListener('click', updateInformation);
+updateEquipmentSizesElement.addEventListener('click', updateSizes);
+
+// initialize Firebase
+initFirebaseAuth();
