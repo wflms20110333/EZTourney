@@ -29,15 +29,22 @@
             <!-- Header section containing logo -->
             <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
                 <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-                <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
-                    <h3><img src="images/logo_white.png" alt="Logo" height="32" width="41" style="margin-top: -8px"> EZTourney</h3>
+                    <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                        <h3><img src="images/logo_white.png" alt="Logo" height="32" width="41" style="margin-top: -8px"> EZTourney</h3>
+                    </div>
+                    <div id="userContainer">
+                        <div hidden id="userEmail"></div>
+                        <button hidden id="signOut" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+                            Sign-out
+                        </button>
+                    </div>
                 </div>
-                <div id="userContainer">
-                    <div hidden id="userEmail"></div>
-                    <button hidden id="signOut" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-                        Sign-out
-                    </button>
-                </div>
+                <div hidden class="mdl-layout__tab-bar mdl-color--light-blue-600" id="pageTab">
+                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="tournamentRegistrationTabButton">Register</a>
+                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="editInformationTabButton">Edit Information</a>
+                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="equipmentSizesTabButton">Equipment Sizes</a>
+                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="createTournamentTabButton">Create Tournament</a>
+                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="manageTournamentsTabButton">Manage Tournaments</a>
                 </div>
             </header>
 
@@ -61,19 +68,18 @@
                 <button class="mdl-snackbar__action" type="button"></button>
             </div>
 
-            <!-- Athlete Screen -->
-            <div hidden class="formContainer" id="athleteScreen">
-                <!-- Athlete Information -->
+            <!-- Athlete Screen: Athlete Information -->
+            <div hidden class="formContainer" id="editInformationTab">
                 <div class="inputForm">
                     <h1>Athlete Information</h1>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Name</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Name</div>
                         <input class="inputText" id="name" type="text"/>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Year</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Year</div>
                         <select id="year">
                             <option disabled selected value> -- select an option -- </option>
                             <option value="2022">2022</option>
@@ -84,8 +90,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Gender</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Gender</div>
                         <select id="gender">
                             <option disabled selected value> -- select an option -- </option>
                             <option value="female">Female</option>
@@ -93,18 +99,18 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Kerberos</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Kerberos</div>
                         <input class="inputText" id="kerberos" type="text"/>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Cell Phone Number</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Cell Phone Number</div>
                         <input class="inputText" id="phoneNumber" type="tel"/>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Belt Rank (ex. green-blue is green)</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Belt Rank (ex. green-blue is green)</div>
                         <select id="belt">
                             <option disabled selected value> -- select an option -- </option>
                             <option value="white">White</option>
@@ -116,8 +122,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Weight Division</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Weight Division</div>
                         <select id="weightDivision">
                             <option disabled selected value> -- select an option -- </option>
                             <option value="light">Light (women: ≤117, men: ≤145)</option>
@@ -126,30 +132,33 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Weight</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Weight</div>
                         <input class="inputText" id="weight" type="number"/>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Emergency Contact Name</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Emergency Contact Name</div>
                         <input class="inputText" id="emergencyContactName" type="text"/>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Emergency Contact Phone</div>
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Emergency Contact Phone</div>
                         <input class="inputText" id="emergencyContactPhone" type="tel"/>
                     </div>
                     
                     <a class="button" target="_blank" id="updateInformation">Update Information</a>
                 </div>
+                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+            </div>
 
-                <!-- Equipment Sizes -->
+            <!-- Athlete Screen: Equipment Sizes -->
+            <div hidden class="formContainer" id="equipmentSizesTab">
                 <div class="inputForm">
                     <h1>Equipment Sizes</h1>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Hogu Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Hogu Size</div>
                         <select id="hoguSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -160,8 +169,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Helmet Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Helmet Size</div>
                         <select id="helmetSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -172,8 +181,8 @@
                         </select>
                     </div>
                     
-                    <div class="personalInfo">
-                        <div class="infoLabel">Arm Guards Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Arm Guards Size</div>
                         <select id="armGuardsSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -184,8 +193,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Shin Guards Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Shin Guards Size</div>
                         <select id="shinGuardsSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -196,8 +205,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Feet Protectors/E-Socks Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Feet Protectors/E-Socks Size</div>
                         <select id="socksSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -208,8 +217,8 @@
                         </select>
                     </div>
 
-                    <div class="personalInfo">
-                        <div class="infoLabel">Gloves Size</div>
+                    <div class="formInput">
+                        <div class="inputLabel">Gloves Size</div>
                         <select id="glovesSize">
                             <option disabled selected value=0> -- select an option -- </option>
                             <option value=1>1</option>
@@ -220,6 +229,46 @@
                         </select>
                     </div>
                     <a class="button" target="_blank" id="updateSizes">Update Equipment Sizes</a>
+                </div>
+                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+            </div>
+
+            <!-- Admin Screen: Create Tournament -->
+            <div hidden class="formContainer" id="createTournamentTab">
+                <div class="inputForm">
+                    <h1>Create Tournament</h1>
+
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Tournament Name</div>
+                        <input class="inputText" id="tournamentName" type="text"/>
+                    </div>
+
+                    <div class="formInput">
+                        <div class="inputLabel">Tournament Message</div>
+                        <textarea id="tournamentMessage"></textarea>
+                    </div>
+
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Tournament Date</div>
+                        <input class="inputText" id="tournamentDate" type="date"/>
+                    </div>
+
+                    <div class="formInput">
+                        <div class="inputLabel">Sign Up Due Date</div>
+                        <input class="inputText" id="tournamentSignUpDueDate" type="date"/>
+                    </div>
+
+                    <div class="formInput">
+                        <div class="inputLabel">Tournament Fees</div>
+                        <input class="inputText" id="tournamentFees" type="text"/>
+                    </div>
+
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Contact (questions/comments/concerns)</div>
+                        <input class="inputText" id="tournamentContact" type="text"/>
+                    </div>
+                    
+                    <a class="button" target="_blank" id="createTournament">Create Tournament</a>
                 </div>
                 <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>

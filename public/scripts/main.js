@@ -7,6 +7,27 @@ function snackbar(message) {
     snackbarElement.MaterialSnackbar.showSnackbar(data);
 }
 
+// When the tab button for edit information is clicked
+function editInformationTabButtonClicked() {
+    editInformationTabElement.removeAttribute('hidden');
+    equipmentSizesTabElement.setAttribute('hidden', 'true');
+    createTournamentTabElement.setAttribute('hidden', 'true');
+}
+
+// When the tab button for equipment sizes is clicked
+function equipmentSizesTabButtonClicked() {
+    editInformationTabElement.setAttribute('hidden', true);
+    equipmentSizesTabElement.removeAttribute('hidden');
+    createTournamentTabElement.setAttribute('hidden', 'true');
+}
+
+// When the tab button for edit information is clicked
+function createTournamentTabButtonClicked() {
+    editInformationTabElement.setAttribute('hidden', 'true');
+    equipmentSizesTabElement.setAttribute('hidden', 'true');
+    createTournamentTabElement.removeAttribute('hidden');
+}
+
 // Signs-in to EZTourney.
 function signIn() {
     var email = emailInputElement.value;
@@ -133,8 +154,9 @@ function authStateObserver(user) {
         signOutButtonElement.removeAttribute('hidden');
 
         // Show other screens
+        pageTabElement.removeAttribute('hidden');
         // TODO: if is not admin
-        athleteScreenElement.removeAttribute('hidden');
+        // athleteScreenElement.removeAttribute('hidden');
         loadAthleteInformation();
 
         // Hide login screen
@@ -145,7 +167,8 @@ function authStateObserver(user) {
         signOutButtonElement.setAttribute('hidden', 'true');
 
         // Hide other screens
-        athleteScreenElement.setAttribute('hidden', 'true');
+        pageTabElement.setAttribute('hidden', 'true');
+        // athleteScreenElement.setAttribute('hidden', 'true');
 
         // Show login screen
         loginScreenElement.removeAttribute('hidden');
@@ -266,6 +289,27 @@ function loadAthleteInformation() {
     });
 }
 
+function createTournament() {
+
+}
+
+// Adds a tournament
+function addTournamentToDatabase(name, message, date, dueDate, tournamentFees, contact) {
+    name = name.trim();
+    var tournamentDocName = concatenateString(/* date + */ name.split(/\s+/));
+    var tournamentsRef = firestore.collection('tournaments');
+    tournamentsRef.doc("Princeton").set({name: "Princeton"});
+    tournamentsRef.doc("Princeton").collection("women'sA").doc("A1").set({light: "EZ"});
+}
+
+// Concatenates strings with underscores
+function concatenateString(strs) {
+    ret = strs[0];
+    for (var i = 1; i < strs.length; i++)
+        ret += "_" + strs[i];
+    return ret;
+}
+
 /*************************************************************************************************/
 
 // some basic settings for firebase/firestore
@@ -278,6 +322,21 @@ firestore.settings(settings);
 // The snackbar
 var snackbarElement = document.getElementById('snackbar');
 
+// The tab
+var pageTabElement = document.getElementById('pageTab');
+
+// Tab button elements
+var tournamentRegistrationTabButtonElement = document.getElementById('tournamentRegistrationTabButton');
+var editInformationTabButtonElement = document.getElementById('editInformationTabButton');
+var equipmentSizesTabButtonElement = document.getElementById('equipmentSizesTabButton');
+var createTournamentTabButtonElement = document.getElementById('createTournamentTabButton');
+var manageTournamentsTabButtonElement = document.getElementById('manageTournamentsTabButton');
+
+// Tab elements
+var editInformationTabElement = document.getElementById('editInformationTab');
+var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
+var createTournamentTabElement = document.getElementById('createTournamentTab');
+
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');
 var emailInputElement = document.getElementById('email');
@@ -289,8 +348,7 @@ var registerButtonElement = document.getElementById('register');
 var userEmailElement = document.getElementById('userEmail');
 var signOutButtonElement = document.getElementById('signOut');
 
-// Athlete screen elements
-var athleteScreenElement = document.getElementById('athleteScreen');
+// Form submission elements
 var updateAthleteInformationElement = document.getElementById('updateInformation');
 var updateEquipmentSizesElement = document.getElementById('updateSizes');
 
@@ -313,6 +371,11 @@ var armGuardsSizeElement = document.getElementById('armGuardsSize');
 var shinGuardsSizeElement = document.getElementById('shinGuardsSize');
 var socksSizeElement = document.getElementById('socksSize');
 var glovesSizeElement = document.getElementById('glovesSize');
+
+// Attach onclick methods for tab buttons
+editInformationTabButtonElement.addEventListener('click', editInformationTabButtonClicked);
+equipmentSizesTabButtonElement.addEventListener('click', equipmentSizesTabButtonClicked);
+createTournamentTabButtonElement.addEventListener('click', createTournamentTabButtonClicked);
 
 // Attach onclick methods for buttons
 signInButtonElement.addEventListener('click', signIn);
