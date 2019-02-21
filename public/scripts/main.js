@@ -9,23 +9,35 @@ function snackbar(message) {
 
 // When the tab button for edit information is clicked
 function editInformationTabButtonClicked() {
-    editInformationTabElement.removeAttribute('hidden');
-    equipmentSizesTabElement.setAttribute('hidden', 'true');
-    createTournamentTabElement.setAttribute('hidden', 'true');
+    tabButtonClicked(editInformationTabButtonElement, editInformationTabElement);
 }
 
 // When the tab button for equipment sizes is clicked
 function equipmentSizesTabButtonClicked() {
-    editInformationTabElement.setAttribute('hidden', true);
-    equipmentSizesTabElement.removeAttribute('hidden');
-    createTournamentTabElement.setAttribute('hidden', 'true');
+    tabButtonClicked(equipmentSizesTabButtonElement, equipmentSizesTabElement);
 }
 
 // When the tab button for edit information is clicked
 function createTournamentTabButtonClicked() {
-    editInformationTabElement.setAttribute('hidden', 'true');
-    equipmentSizesTabElement.setAttribute('hidden', 'true');
-    createTournamentTabElement.removeAttribute('hidden');
+    tabButtonClicked(createTournamentTabButtonElement, createTournamentTabElement);
+}
+
+// Toggles the tab buttons when a button is clicked
+function tabButtonClicked(buttonClicked, tabToShow) {
+    for (var i = 0; i < tabButtonElements.length; i++) {
+        var tabButton = tabButtonElements[i];
+        if (tabButton == buttonClicked)
+            tabButton.classList.add('isOnPage');
+        else
+            tabButton.classList.remove('isOnPage');
+    }
+    for (var i = 0; i < tabElements.length; i++) {
+        var tab = tabElements[i];
+        if (tab == tabToShow)
+            tab.removeAttribute('hidden');
+        else
+            tab.setAttribute('hidden', 'true');
+    }
 }
 
 // Signs-in to EZTourney.
@@ -189,7 +201,7 @@ function updateInformationButtonClicked() {
     var emergencyContactName = athleteEmergencyContactNameElement.value;
     var emergencyContactPhone = athleteEmergencyContactPhoneElement.value;
 
-    // check for invalid form
+    // check for missing required fields
     if (name == "" ||
         year == "" ||
         gender == "" ||
@@ -289,8 +301,9 @@ function loadAthleteInformation() {
     });
 }
 
-// Attempts to create a tournament
+// Creates a tournament
 function createTournamentButtonClicked() {
+    // retrieve values
     var tournamentName = tournamentNameElement.value;
     var tournamentMessage = tournamentMessageElement.value;
     var tournamentDate = tournamentDateElement.value;
@@ -298,6 +311,7 @@ function createTournamentButtonClicked() {
     var tournamentFees = tournamentFeesElement.value;
     var tournamentContact = tournamentContactElement.value;
 
+    // check for missing required fields
     if (tournamentName == "" ||
         tournamentDate == "" ||
         tournamentContact == "") {
@@ -305,10 +319,11 @@ function createTournamentButtonClicked() {
             return;
     }
 
+    // submit data
     addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, tournamentContact);
 }
 
-// Adds a tournament
+// Adds a tournament to the database
 function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact) {
     // create tournament's document name
     name = name.trim();
@@ -368,10 +383,15 @@ var equipmentSizesTabButtonElement = document.getElementById('equipmentSizesTabB
 var createTournamentTabButtonElement = document.getElementById('createTournamentTabButton');
 var manageTournamentsTabButtonElement = document.getElementById('manageTournamentsTabButton');
 
+var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
+    equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement];
+
 // Tab elements
 var editInformationTabElement = document.getElementById('editInformationTab');
 var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
 var createTournamentTabElement = document.getElementById('createTournamentTab');
+
+var tabElements = [editInformationTabElement, equipmentSizesTabElement, createTournamentTabElement];
 
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');
