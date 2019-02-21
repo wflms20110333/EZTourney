@@ -144,7 +144,7 @@ textarea {
 }
 
 /* Copyright note */
-#copyright {
+.copyright {
     color: rgba(0,0,0,0.4);
     text-align: center;
     font-size: 13px;

@@ -59,13 +59,19 @@
                     <a class="button" target="_blank" id="signIn">Sign in</a>
                     <a class="button" target="_blank" id="register" style="margin-top: 10px">Register</a>
                 </div>
-                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Snackbar notifications -->
             <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
                 <div class="mdl-snackbar__text"></div>
                 <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+
+            <!-- Athlete Screen: Tournament Registration -->
+            <div class="formContainer" id="tournamentRegistrationTab">
+                <!-- Tournament registration forms dynamically added here -->
+                <!-- Copyright message will be added dynamically -->
             </div>
 
             <!-- Athlete Screen: Athlete Information -->
@@ -149,7 +155,7 @@
                     
                     <a class="button" target="_blank" id="updateInformation">Update Information</a>
                 </div>
-                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Athlete Screen: Equipment Sizes -->
@@ -230,7 +236,7 @@
                     </div>
                     <a class="button" target="_blank" id="updateSizes">Update Equipment Sizes</a>
                 </div>
-                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Admin Screen: Create Tournament -->
@@ -270,7 +276,7 @@
                     
                     <a class="button" target="_blank" id="createTournament">Create Tournament</a>
                 </div>
-                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
         </div>
 
@@ -306,6 +312,12 @@
         <script src="/__/firebase/5.7.3/firebase-firestore.js"></script>
         <script src="/__/firebase/init.js"></script>
 
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/load.js"></script>
+        <script src="scripts/submit-form.js"></script>
+        <script src="scripts/tabs.js"></script>
+        <script src="scripts/util.js"></script>
+        <script src="scripts/get-elements.js"></script>
         <script src="scripts/main.js"></script>
     </body>
 </html>
