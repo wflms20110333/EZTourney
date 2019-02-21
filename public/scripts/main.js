@@ -176,7 +176,7 @@ function authStateObserver(user) {
 }
 
 // Updates an athlete's information.
-function updateInformation() {
+function updateInformationButtonClicked() {
     // retrieve values
     var name = athleteNameElement.value;
     var year = athleteYearElement.value;
@@ -200,7 +200,7 @@ function updateInformation() {
         weight == 0 ||
         emergencyContactName == "" ||
         emergencyContactPhone == "") {
-            snackbar('Please fill out all fields');
+            snackbar('Please fill out all required fields');
             return;
     }
 
@@ -227,7 +227,7 @@ function updateInformation() {
 }
 
 // Updates an athlete's equipment sizes.
-function updateSizes() {
+function updateEquipmentSizesButtonClicked() {
     // retrieve values
     var hoguSize = hoguSizeElement.value;
     var helmetSize = helmetSizeElement.value;
@@ -289,17 +289,53 @@ function loadAthleteInformation() {
     });
 }
 
-function createTournament() {
+// Attempts to create a tournament
+function createTournamentButtonClicked() {
+    var tournamentName = tournamentNameElement.value;
+    var tournamentMessage = tournamentMessageElement.value;
+    var tournamentDate = tournamentDateElement.value;
+    var tournamentSignUpDueDate = tournamentSignUpDueDateElement.value;
+    var tournamentFees = tournamentFeesElement.value;
+    var tournamentContact = tournamentContactElement.value;
 
+    if (tournamentName == "" ||
+        tournamentDate == "" ||
+        tournamentContact == "") {
+            snackbar('Please fill out all required fields');
+            return;
+    }
+
+    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, tournamentContact);
 }
 
 // Adds a tournament
-function addTournamentToDatabase(name, message, date, dueDate, tournamentFees, contact) {
+function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact) {
+    // create tournament's document name
     name = name.trim();
-    var tournamentDocName = concatenateString(/* date + */ name.split(/\s+/));
+    var tournamentDocName = date + "_" + concatenateString(name.split(/\s+/));
+
+    // get tournaments collection reference
     var tournamentsRef = firestore.collection('tournaments');
-    tournamentsRef.doc("Princeton").set({name: "Princeton"});
-    tournamentsRef.doc("Princeton").collection("women'sA").doc("A1").set({light: "EZ"});
+
+    // add new tournament document to collection
+    tournamentsRef.doc(tournamentDocName).set({
+        name: name,
+        message: message,
+        date: date,
+        signUpDueDate: signUpDueDate,
+        fees: fees,
+        contact: contact
+    }).then(function() {
+        snackbar('Tournament successfully created and open for registration!');
+    }).catch(function(error) {
+        console.error("Error writing new tournament's information to Firebase Database", error);
+    });;
+
+    // add registered athletes collection add athletes when they register?
+    // tournamentsRef.doc(tournamentDocName).collection('registeredAthletes').doc("A1").set({light: "EZ"});
+
+    // add sparring teams collection? or do when sparring teams are generated
+    // tournamentsRef.doc(tournamentDocName).collection("women'sA").doc("A1").set({light: "EZ"});
 }
 
 // Concatenates strings with underscores
@@ -349,8 +385,9 @@ var userEmailElement = document.getElementById('userEmail');
 var signOutButtonElement = document.getElementById('signOut');
 
 // Form submission elements
-var updateAthleteInformationElement = document.getElementById('updateInformation');
-var updateEquipmentSizesElement = document.getElementById('updateSizes');
+var updateAthleteInformationButtonElement = document.getElementById('updateInformation');
+var updateEquipmentSizesButtonElement = document.getElementById('updateSizes');
+var createTournamentButtonElement = document.getElementById('createTournament');
 
 // Athlete information elements
 var athleteNameElement = document.getElementById('name');
@@ -372,6 +409,14 @@ var shinGuardsSizeElement = document.getElementById('shinGuardsSize');
 var socksSizeElement = document.getElementById('socksSize');
 var glovesSizeElement = document.getElementById('glovesSize');
 
+// Create tournament elements
+var tournamentNameElement = document.getElementById('tournamentName');
+var tournamentMessageElement = document.getElementById('tournamentMessage');
+var tournamentDateElement = document.getElementById('tournamentDate');
+var tournamentSignUpDueDateElement = document.getElementById('tournamentSignUpDueDate');
+var tournamentFeesElement = document.getElementById('tournamentFees');
+var tournamentContactElement = document.getElementById('tournamentContact');
+
 // Attach onclick methods for tab buttons
 editInformationTabButtonElement.addEventListener('click', editInformationTabButtonClicked);
 equipmentSizesTabButtonElement.addEventListener('click', equipmentSizesTabButtonClicked);
@@ -381,8 +426,9 @@ createTournamentTabButtonElement.addEventListener('click', createTournamentTabBu
 signInButtonElement.addEventListener('click', signIn);
 signOutButtonElement.addEventListener('click', signOut);
 registerButtonElement.addEventListener('click', register);
-updateAthleteInformationElement.addEventListener('click', updateInformation);
-updateEquipmentSizesElement.addEventListener('click', updateSizes);
+updateAthleteInformationButtonElement.addEventListener('click', updateInformationButtonClicked);
+updateEquipmentSizesButtonElement.addEventListener('click', updateEquipmentSizesButtonClicked);
+createTournamentButtonElement.addEventListener('click', createTournamentButtonClicked);
 
 // initialize Firebase
 initFirebaseAuth();

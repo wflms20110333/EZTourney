@@ -26,7 +26,7 @@
     <body>
         <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-            <!-- Header section containing logo -->
+            <!-- Header section containing logo and tab navigation bar -->
             <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
                 <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
                     <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
@@ -40,11 +40,11 @@
                     </div>
                 </div>
                 <div hidden class="mdl-layout__tab-bar mdl-color--light-blue-600" id="pageTab">
-                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="tournamentRegistrationTabButton">Register</a>
-                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="editInformationTabButton">Edit Information</a>
-                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="equipmentSizesTabButton">Equipment Sizes</a>
-                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="createTournamentTabButton">Create Tournament</a>
-                    <a class="mdl-layout__tab is-active mdl-button mdl-js-button mdl-js-ripple-effect" id="manageTournamentsTabButton">Manage Tournaments</a>
+                    <a class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="tournamentRegistrationTabButton">Register</a>
+                    <a class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="editInformationTabButton">Edit Information</a>
+                    <a class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="equipmentSizesTabButton">Equipment Sizes</a>
+                    <a class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="createTournamentTabButton">Create Tournament</a>
+                    <a class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="manageTournamentsTabButton">Manage Tournaments</a>
                 </div>
             </header>
 
@@ -59,7 +59,7 @@
                     <a class="button" target="_blank" id="signIn">Sign in</a>
                     <a class="button" target="_blank" id="register" style="margin-top: 10px">Register</a>
                 </div>
-                <p id="load">Firebase SDK Loading&hellip;</p>
+                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Snackbar notifications -->
@@ -149,7 +149,7 @@
                     
                     <a class="button" target="_blank" id="updateInformation">Update Information</a>
                 </div>
-                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Athlete Screen: Equipment Sizes -->
@@ -230,7 +230,7 @@
                     </div>
                     <a class="button" target="_blank" id="updateSizes">Update Equipment Sizes</a>
                 </div>
-                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Admin Screen: Create Tournament -->
@@ -264,27 +264,14 @@
                     </div>
 
                     <div class="formInput">
-                        <div class="inputLabel requiredField">Contact (questions/comments/concerns)</div>
+                        <div class="inputLabel requiredField">Contact Information of Organizer</div>
                         <input class="inputText" id="tournamentContact" type="text"/>
                     </div>
                     
                     <a class="button" target="_blank" id="createTournament">Create Tournament</a>
                 </div>
-                <p id="load">Copyright © 2019 MIT Sport Taekwondo</p>
+                <p id="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
-
-            <!--main class="mdl-layout__content mdl-color--grey-100">
-                <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
-
-                
-
-                <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-                    <div class="mdl-snackbar__text"></div>
-                    <button class="mdl-snackbar__action" type="button"></button>
-                </div>
-
-                </div>
-            </main-->
         </div>
 
         <!-- Firebase initialization code -->
@@ -301,12 +288,10 @@
                 // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         
                 try {
-                let app = firebase.app();
-                let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-                document.getElementById('load').innerHTML = 'Copyright \u00A9 2019 MIT Sport Taekwondo';// `Firebase SDK loaded with ${features.join(', ')}`;
+                    let app = firebase.app();
+                    let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
                 } catch (e) {
-                console.error(e);
-                document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+                    console.error(e);
                 }
             });
         </script>
