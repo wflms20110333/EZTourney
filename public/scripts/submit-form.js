@@ -1,6 +1,61 @@
-// TODO
-function signUpForTournamentButtonClicked() {
+// Registers the current user for a tournament.
+function registerForTournamentButtonClicked() {
+    // retrieve values
+    var poomsae = eventsPoomsaeElement.checked;
+    var sparring = eventsSparringElement.checked;
+    var equipmentBuddy = equipmentBuddyElement.value;
+    var equipmentBuddyHogu = equipmentBuddyHoguElement.checked;
+    var equipmentBuddyHelmet = equipmentBuddyHelmetElement.checked;
+    var equipmentBuddyArmGuards = equipmentBuddyArmGuardsElement.checked;
+    var equipmentBuddyShinGuards = equipmentBuddyShinGuardsElement.checked;
+    var equipmentBuddyGloves = equipmentBuddyGlovesElement.checked;
+    var equipmentBuddyFeetProtectors = equipmentBuddyFeetProtectorsElement.checked;
+    var equipmentBuddyESocks = equipmentBuddyESocksElement.checked;
+    var notes = tournamentRegistrationNotesElement.value;
+    var confirmation = tournamentRegistrationConfirmationElement.checked;
+
+    // check for missing required fields
+    if ((!poomsae && !sparring) ||
+        !confirmation) {
+        snackbar('Please fill out all required fields');
+        return;
+    }
+
     // check equipment sizes are filled out
+    if (equipmentBuddy != "") {
+        loadAthleteInformation();
+        if (equipmentBuddyHogu && hoguSizeElement.value == 0 ||
+            equipmentBuddyHelmet && helmetSizeElement.value == 0 ||
+            equipmentBuddyArmGuards && armGuardsSizeElement.value == 0 ||
+            equipmentBuddyShinGuards && shinGuardsSizeElement.value == 0 ||
+            equipmentBuddyGloves && glovesSizeElement.value ||
+            equipmentBuddyFeetProtectors && socksSizeElement.value == 0 ||
+            equipmentBuddyESocks && socksSizeElement.value == 0) {
+            snackbar("Please fill out sizes for checked equipment on 'Equipment Sizes' tab");
+            return;
+        }
+    }
+    
+    // submit data
+    var tournamentsRef = firestore.collection("tournaments");
+    tournamentsRef.doc(openRegistrationTournamentDocName).collection('registeredAthletes').doc(getUserEmail()).set({
+        userEmail: getUserEmail(),
+        poomsae: poomsae,
+        sparring: sparring,
+        equipmentBuddy: equipmentBuddy,
+        equipmentBuddyHogu: equipmentBuddyHogu,
+        equipmentBuddyHelmet: equipmentBuddyHelmet,
+        equipmentBuddyArmGuards: equipmentBuddyArmGuards,
+        equipmentBuddyShinGuards: equipmentBuddyShinGuards,
+        equipmentBuddyGloves: equipmentBuddyGloves,
+        equipmentBuddyFeetProtectors: equipmentBuddyFeetProtectors,
+        equipmentBuddyESocks: equipmentBuddyESocks,
+        notes: notes
+    }).then(function() {
+        snackbar('Successfully registered for tournament!');
+    }).catch(function(error) {
+        console.error("Error writing new athlete's registration information to Firebase Database", error);
+    });
 }
 
 // Updates an athlete's information.
@@ -28,8 +83,8 @@ function updateInformationButtonClicked() {
         weight == 0 ||
         emergencyContactName == "" ||
         emergencyContactPhone == "") {
-            snackbar('Please fill out all required fields');
-            return;
+        snackbar('Please fill out all required fields');
+        return;
     }
 
     // submit data
@@ -115,6 +170,8 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
 
     // add new tournament document to collection
     tournamentsRef.doc(tournamentDocName).set({
+        documentID: tournamentDocName,
+        status: "open",
         name: name,
         message: message,
         date: date,

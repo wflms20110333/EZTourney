@@ -39,15 +39,21 @@ function loadOpenTournamentRegistrations() {
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             var data = doc.data();
-            if (data.status == 'open')
-                addTournamentRegistrationForm(data);
+            if (data.status == 'open') {
+                addTournamentRegistrationForm(data); // adds the registration form
+                openRegistrationTournamentDocName = data.documentID; // updates the reference
+            }
         });
+        
+        // add the copyright message
+        var copyright = document.createElement('p');
+        copyright.setAttribute('class', 'copyright');
+        copyright.appendChild(document.createTextNode('Copyright © 2019 MIT Sport Taekwondo'));
+        tournamentRegistrationTabElement.appendChild(copyright);
+
+        // loads the tournament registration elements
+        loadTournamentRegistrationElements();
     });
-    // add the copyright message
-    var copyright = document.createElement('p');
-    copyright.setAttribute('class', 'copyright');
-    copyright.appendChild(document.createTextNode('Copyright © 2019 MIT Sport Taekwondo'));
-    document.getElementById('tournamentRegistrationTab').appendChild(copyright);
 }
 
 // Adds a tournament registration form to the register tab
@@ -240,5 +246,76 @@ function addTournamentRegistrationForm(tournamentData) {
 
     inputForm.appendChild(reminder);
 
+    var submitButton = document.createElement('a');
+    submitButton.setAttribute('class', 'button');
+    submitButton.setAttribute('target', '_blank');
+    submitButton.setAttribute('id', 'registerForTournament');
+    submitButton.appendChild(document.createTextNode('Register for Tournament!'));
+    inputForm.appendChild(submitButton);
+
     document.getElementById('tournamentRegistrationTab').appendChild(inputForm);
+}
+
+// Loads tournament registration elements and adds onclick method for registerForTournament button
+function loadTournamentRegistrationElements() {
+    eventsPoomsaeElement = document.getElementById('poomsae');
+    eventsSparringElement = document.getElementById('sparring');
+    equipmentBuddyElement = document.getElementById('equipmentBuddy');
+    equipmentBuddyHoguElement = document.getElementById('equipmentBuddyHogu');
+    equipmentBuddyHelmetElement = document.getElementById('equipmentBuddyHelmet');
+    equipmentBuddyArmGuardsElement = document.getElementById('equipmentBuddyArmGuards');
+    equipmentBuddyShinGuardsElement = document.getElementById('equipmentBuddyShinGuards');
+    equipmentBuddyGlovesElement = document.getElementById('equipmentBuddyGloves');
+    equipmentBuddyFeetProtectorsElement = document.getElementById('equipmentBuddyFeetProtectors');
+    equipmentBuddyESocksElement = document.getElementById('equipmentBuddyESocks');
+    tournamentRegistrationNotesElement = document.getElementById('tournamentRegistrationNotes');
+    tournamentRegistrationConfirmationElement = document.getElementById('confirmationStatement');
+
+    registerForTournamentButtonElement = document.getElementById('registerForTournament');
+    registerForTournamentButtonElement.addEventListener('click', registerForTournamentButtonClicked);
+}
+
+// Loads all open tournaments to the registration page
+function loadManageTournamentsPage() {
+    // clear tournament elements
+    tournamentElements = [];
+
+    // individually create each tournament element
+    firestore.collection('tournaments').get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            var data = doc.data();
+            console.log(data.date);
+            tournamentElements.push(createTournamentManagementElement(doc));
+        });
+
+        // add all tournament elements to the tab
+        for (var i = tournamentElements.length - 1; i >= 0; i--)
+            manageTournamentsTabElement.appendChild(tournamentElements[i]);
+        
+        // add the copyright message
+        var copyright = document.createElement('p');
+        copyright.setAttribute('class', 'copyright');
+        copyright.appendChild(document.createTextNode('Copyright © 2019 MIT Sport Taekwondo'));
+        manageTournamentsTabElement.appendChild(copyright);
+
+        // // loads the tournament registration elements
+        // loadTournamentRegistrationElements();
+    });
+}
+
+function createTournamentManagementElement(tournamentDoc) {
+    // retrieve tournament data
+    var tournamentData = tournamentDoc.data();
+
+    // creates the wrapper block for the tournament
+    var tournamentBlock = document.createElement('div');
+    tournamentBlock.setAttribute('class', 'inputForm inputFormLarge');
+    
+    // create title element
+    var title = document.createElement('h1');
+    title.appendChild(document.createTextNode(tournamentData.name));
+    tournamentBlock.appendChild(title);
+
+    return tournamentBlock;
 }

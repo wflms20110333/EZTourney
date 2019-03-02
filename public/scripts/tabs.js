@@ -1,3 +1,8 @@
+// When the tab button for tournament registration is clicked
+function tournamentRegistrationTabButtonClicked() {
+    tabButtonClicked(tournamentRegistrationTabButtonElement, tournamentRegistrationTabElement);
+}
+
 // When the tab button for edit information is clicked
 function editInformationTabButtonClicked() {
     tabButtonClicked(editInformationTabButtonElement, editInformationTabElement);
@@ -8,9 +13,14 @@ function equipmentSizesTabButtonClicked() {
     tabButtonClicked(equipmentSizesTabButtonElement, equipmentSizesTabElement);
 }
 
-// When the tab button for edit information is clicked
+// When the tab button for create tournament is clicked
 function createTournamentTabButtonClicked() {
     tabButtonClicked(createTournamentTabButtonElement, createTournamentTabElement);
+}
+
+// When the tab button for manage tournaments is clicked
+function manageTournamentsTabButtonClicked() {
+    tabButtonClicked(manageTournamentsTabButtonElement, manageTournamentsTabElement);
 }
 
 // Toggles the tab buttons when a button is clicked

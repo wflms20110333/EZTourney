@@ -15,11 +15,14 @@ var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformation
     equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement];
 
 // Tab elements
+var tournamentRegistrationTabElement = document.getElementById('tournamentRegistrationTab');
 var editInformationTabElement = document.getElementById('editInformationTab');
 var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
 var createTournamentTabElement = document.getElementById('createTournamentTab');
+var manageTournamentsTabElement = document.getElementById('manageTournamentsTab');
 
-var tabElements = [editInformationTabElement, equipmentSizesTabElement, createTournamentTabElement];
+var tabElements = [tournamentRegistrationTabElement, editInformationTabElement, 
+    equipmentSizesTabElement, createTournamentTabElement, manageTournamentsTabElement];
 
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');
@@ -33,9 +36,25 @@ var userEmailElement = document.getElementById('userEmail');
 var signOutButtonElement = document.getElementById('signOut');
 
 // Form submission elements
+var registerForTournamentButtonElement = document.getElementById('registerForTournament');
 var updateAthleteInformationButtonElement = document.getElementById('updateInformation');
 var updateEquipmentSizesButtonElement = document.getElementById('updateSizes');
 var createTournamentButtonElement = document.getElementById('createTournament');
+
+// Tournament registration elements
+var openRegistrationTournamentDocName = ""; // need to assign later
+var eventsPoomsaeElement = document.getElementById('poomsae');
+var eventsSparringElement = document.getElementById('sparring');
+var equipmentBuddyElement = document.getElementById('equipmentBuddy');
+var equipmentBuddyHoguElement = document.getElementById('equipmentBuddyHogu');
+var equipmentBuddyHelmetElement = document.getElementById('equipmentBuddyHelmet');
+var equipmentBuddyArmGuardsElement = document.getElementById('equipmentBuddyArmGuards');
+var equipmentBuddyShinGuardsElement = document.getElementById('equipmentBuddyShinGuards');
+var equipmentBuddyGlovesElement = document.getElementById('equipmentBuddyGloves');
+var equipmentBuddyFeetProtectorsElement = document.getElementById('equipmentBuddyFeetProtectors');
+var equipmentBuddyESocksElement = document.getElementById('equipmentBuddyESocks');
+var tournamentRegistrationNotesElement = document.getElementById('tournamentRegistrationNotes');
+var tournamentRegistrationConfirmationElement = document.getElementById('confirmationStatement');
 
 // Athlete information elements
 var athleteNameElement = document.getElementById('name');
@@ -64,3 +83,6 @@ var tournamentDateElement = document.getElementById('tournamentDate');
 var tournamentSignUpDueDateElement = document.getElementById('tournamentSignUpDueDate');
 var tournamentFeesElement = document.getElementById('tournamentFees');
 var tournamentContactElement = document.getElementById('tournamentContact');
+
+// Manage tournament elements
+var tournamentElements = [];

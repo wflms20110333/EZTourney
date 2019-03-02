@@ -110,6 +110,9 @@ body {
     padding: 16px;
     border-radius: 4px;
 }
+.inputFormLarge {
+    max-width: 1000px;
+}
 .inputText {
     width: 296px;
     height: 18px;
@@ -166,4 +169,19 @@ textarea {
         padding-top: 3px;
         padding-right: 2px;
     }
+}
+
+/* Table */
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
