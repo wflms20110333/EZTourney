@@ -351,6 +351,7 @@ function createTournamentManagementElement(tournamentData, path) {
         lineBreak.setAttribute('id', 'closeOpenTournamentButtonBr');
         tournamentBlock.appendChild(lineBreak);
     }
+    
     /*
     // create show/hide registered athletes button
     var submitButton = document.createElement('a');

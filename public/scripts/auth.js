@@ -123,10 +123,21 @@ function authStateObserver(user) {
         userEmailElement.removeAttribute('hidden');
         signOutButtonElement.removeAttribute('hidden');
 
-        // Show other screens
+        // Show appropriate tab navigation buttons
+        firestore.doc('/users/' + userEmail).get().then(function(doc) {
+            var data = doc.data();
+            if (data.athlete)
+                for (var i = 0; i < athleteTabButtonElements.length; i++)
+                    athleteTabButtonElements[i].removeAttribute('hidden');
+            if (data.admin)
+                for (var i = 0; i < adminTabButtonElements.length; i++)
+                    adminTabButtonElements[i].removeAttribute('hidden');
+        });
+
+        // Show tab navigation bar
         pageTabElement.removeAttribute('hidden');
-        // TODO: if is not admin
-        // athleteScreenElement.removeAttribute('hidden');
+
+        // Loads information from database
         loadAthleteInformation();
         loadOpenTournamentRegistrations();
         loadManageTournamentsPage();
@@ -138,9 +149,16 @@ function authStateObserver(user) {
         userEmailElement.setAttribute('hidden', 'true');
         signOutButtonElement.setAttribute('hidden', 'true');
 
-        // Hide other screens
+        // Hide all tab navigation buttons
+        for (var i = 0; i < tabButtonElements.length; i++)
+            tabButtonElements[i].setAttribute('hidden', 'true');
+
+        // Hide tab navigation bar
         pageTabElement.setAttribute('hidden', 'true');
-        // athleteScreenElement.setAttribute('hidden', 'true');
+
+        // Hide all other screens
+        for (var i = 0; i < tabElements.length; i++)
+            tabElements[i].setAttribute('hidden', 'true');
 
         // Show login screen
         loginScreenElement.removeAttribute('hidden');

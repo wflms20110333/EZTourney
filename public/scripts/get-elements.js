@@ -14,6 +14,9 @@ var manageTournamentsTabButtonElement = document.getElementById('manageTournamen
 var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
     equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement];
 
+var athleteTabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, equipmentSizesTabButtonElement];
+var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement];
+
 // Tab elements
 var tournamentRegistrationTabElement = document.getElementById('tournamentRegistrationTab');
 var editInformationTabElement = document.getElementById('editInformationTab');
