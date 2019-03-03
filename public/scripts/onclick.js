@@ -99,11 +99,9 @@ function updateInformationButtonClicked() {
         weight: weight,
         emergencyContactName: emergencyContactName,
         emergencyContactPhone: emergencyContactPhone
-    })
-    .then(function() {
+    }).then(function() {
         snackbar('Information updated!');
-    })
-    .catch(function(error) {
+    }).catch(function(error) {
         // The document probably doesn't exist.
         console.error("Error updating document: ", error);
     });
@@ -127,11 +125,9 @@ function updateEquipmentSizesButtonClicked() {
         shinGuardsSize: shinGuardsSize,
         socksSize: socksSize,
         glovesSize: glovesSize
-    })
-    .then(function() {
+    }).then(function() {
         snackbar('Equipment sizes updated!');
-    })
-    .catch(function(error) {
+    }).catch(function(error) {
         // The document probably doesn't exist.
         console.error("Error updating document: ", error);
     });
@@ -151,8 +147,14 @@ function createTournamentButtonClicked() {
     if (tournamentName == "" ||
         tournamentDate == "" ||
         tournamentContact == "") {
-            snackbar('Please fill out all required fields');
-            return;
+        snackbar('Please fill out all required fields');
+        return;
+    }
+
+    // check if there are other open tournaments
+    if (openRegistrationTournamentDocName != "") {
+        snackbar('Cannot have more than one tournament open for registration; please close the other first');
+        return;
     }
 
     // submit data
@@ -179,14 +181,33 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         fees: fees,
         contact: contact
     }).then(function() {
-        snackbar('Tournament successfully created and open for registration!');
+        snackbar("Tournament successfully created and open for registration!");
     }).catch(function(error) {
         console.error("Error writing new tournament's information to Firebase Database", error);
     });;
 
-    // add registered athletes collection add athletes when they register?
-    // tournamentsRef.doc(tournamentDocName).collection('registeredAthletes').doc("A1").set({light: "EZ"});
-
     // add sparring teams collection? or do when sparring teams are generated
     // tournamentsRef.doc(tournamentDocName).collection("women'sA").doc("A1").set({light: "EZ"});
+}
+
+// Closes the tournament currently open (there should be at most one)
+function closeOpenTournament() {
+    // checks if no tournament is open for registration
+    if (openRegistrationTournamentDocName == "") {
+        console.log('No open tournaments to close');
+        return;
+    }
+
+    // sets the tournament's status to closed
+    firestore.doc('/tournaments/' + openRegistrationTournamentDocName).update({
+        status: "closed"
+    }).then(function() {
+        openRegistrationTournamentDocName = "";
+        removeElement(document.getElementById('closeOpenTournament'));
+        removeElement(document.getElementById('closeOpenTournamentButtonBr'));
+        snackbar('Tournament registration closed!');
+    }).catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+    });
 }

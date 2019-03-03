@@ -14,3 +14,8 @@ function snackbar(message) {
     };
     snackbarElement.MaterialSnackbar.showSnackbar(data);
 }
+
+// Removes an HTML element
+function removeElement(element) {
+    element.parentElement.removeChild(element);
+}

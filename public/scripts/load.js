@@ -285,8 +285,7 @@ function loadManageTournamentsPage() {
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             var data = doc.data();
-            console.log(data.date);
-            tournamentElements.push(createTournamentManagementElement(doc));
+            tournamentElements.push(createTournamentManagementElement(data, '/tournaments/' + data.documentID + '/'));
         });
 
         // add all tournament elements to the tab
@@ -298,16 +297,10 @@ function loadManageTournamentsPage() {
         copyright.setAttribute('class', 'copyright');
         copyright.appendChild(document.createTextNode('Copyright © 2019 MIT Sport Taekwondo'));
         manageTournamentsTabElement.appendChild(copyright);
-
-        // // loads the tournament registration elements
-        // loadTournamentRegistrationElements();
     });
 }
 
-function createTournamentManagementElement(tournamentDoc) {
-    // retrieve tournament data
-    var tournamentData = tournamentDoc.data();
-
+function createTournamentManagementElement(tournamentData, path) {
     // creates the wrapper block for the tournament
     var tournamentBlock = document.createElement('div');
     tournamentBlock.setAttribute('class', 'inputForm inputFormLarge');
@@ -316,6 +309,154 @@ function createTournamentManagementElement(tournamentDoc) {
     var title = document.createElement('h1');
     title.appendChild(document.createTextNode(tournamentData.name));
     tournamentBlock.appendChild(title);
+
+    // create message element
+    if (tournamentData.message != "") {
+        var message = document.createElement('p');
+        var lines = tournamentData.message.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+            if (i > 0)
+                message.appendChild(document.createElement('br'));
+            message.appendChild(document.createTextNode(lines[i]));
+        }
+        tournamentBlock.appendChild(message);
+    }
+    
+    // create description element
+    var description = document.createElement('p');
+    description.appendChild(document.createTextNode("Date: " + tournamentData.date));
+    if (tournamentData.signUpDueDate != "") {
+        description.appendChild(document.createElement('br'));
+        description.appendChild(document.createTextNode("Sign up due date: " + tournamentData.signUpDueDate));
+    }
+    if (tournamentData.fees != "") {
+        description.appendChild(document.createElement('br'));
+        description.appendChild(document.createTextNode("Tournament fees: " + tournamentData.fees));
+    }
+    description.appendChild(document.createElement('br'));
+    description.appendChild(document.createTextNode("Contact information of organizer: " + tournamentData.contact));
+    tournamentBlock.appendChild(description);
+
+    if (tournamentData.status == "open") {
+        // option to close an open tournament
+        var closeTournamentButton = document.createElement('a');
+        closeTournamentButton.setAttribute('class', 'button');
+        closeTournamentButton.setAttribute('target', '_blank');
+        closeTournamentButton.setAttribute('id', 'closeOpenTournament');
+        closeTournamentButton.appendChild(document.createTextNode('Close registration'));
+        closeTournamentButton.addEventListener('click', closeOpenTournament);
+        tournamentBlock.appendChild(closeTournamentButton);
+
+        var lineBreak = document.createElement('br');
+        lineBreak.setAttribute('id', 'closeOpenTournamentButtonBr');
+        tournamentBlock.appendChild(lineBreak);
+    }
+    /*
+    // create show/hide registered athletes button
+    var submitButton = document.createElement('a');
+    submitButton.setAttribute('class', 'button');
+    submitButton.setAttribute('target', '_blank');
+    // submitButton.setAttribute('id', 'registerForTournament');
+    submitButton.appendChild(document.createTextNode('Show registered athletes')); // add onclick to toggle table display?
+    tournamentBlock.appendChild(submitButton);
+    */
+
+    var registeredAthletesTitle = document.createElement('h2');
+    registeredAthletesTitle.appendChild(document.createTextNode('Registered Athletes'));
+    tournamentBlock.appendChild(registeredAthletesTitle);
+
+    // create registered athletes table
+    var registeredAthletesTable = document.createElement('table');
+
+    var headerRow = document.createElement('tr');
+
+    var headerName = document.createElement('th');
+    headerName.appendChild(document.createTextNode('Name'));
+    headerRow.appendChild(headerName);
+
+    var headerEvents = document.createElement('th');
+    headerEvents.appendChild(document.createTextNode('Events'));
+    headerRow.appendChild(headerEvents);
+
+    var headerYear = document.createElement('th');
+    headerYear.appendChild(document.createTextNode('Year'));
+    headerRow.appendChild(headerYear);
+
+    var headerGender = document.createElement('th');
+    headerGender.appendChild(document.createTextNode('Gender'));
+    headerRow.appendChild(headerGender);
+
+    var headerBelt = document.createElement('th');
+    headerBelt.appendChild(document.createTextNode('Belt'));
+    headerRow.appendChild(headerBelt);
+
+    var headerWeightDivision = document.createElement('th');
+    headerWeightDivision.appendChild(document.createTextNode('Weight Division'));
+    headerRow.appendChild(headerWeightDivision);
+
+    var headerWeight = document.createElement('th');
+    headerWeight.appendChild(document.createTextNode('Weight'));
+    headerRow.appendChild(headerWeight);
+
+    registeredAthletesTable.appendChild(headerRow);
+    
+    firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            var data = doc.data();
+
+            // create event string
+            var events = "";
+            if (data.poomsae && data.sparring)
+                events = "poomsae, sparring";
+            else if (data.poomsae)
+                events = "poomsae";
+            else
+                events = "sparring";
+
+            var currentRow = document.createElement('tr');
+
+            // adds information of athlete
+            firestore.doc('/athletes/' + data.userEmail).get().then(function(doc) {
+                // retrieve the document's data
+                var athleteData = doc.data();
+
+                var currentName = document.createElement('td');
+                currentName.appendChild(document.createTextNode(athleteData.name));
+                currentRow.appendChild(currentName);
+
+                var currentEvents = document.createElement('td');
+                currentEvents.appendChild(document.createTextNode(events));
+                currentRow.appendChild(currentEvents);
+
+                var currentYear = document.createElement('td');
+                currentYear.appendChild(document.createTextNode(athleteData.year));
+                currentRow.appendChild(currentYear);
+
+                var currentGender = document.createElement('td');
+                currentGender.appendChild(document.createTextNode(athleteData.gender));
+                currentRow.appendChild(currentGender);
+
+                var currentBelt = document.createElement('td');
+                currentBelt.appendChild(document.createTextNode(athleteData.belt));
+                currentRow.appendChild(currentBelt);
+
+                var currentWeightDivision = document.createElement('td');
+                currentWeightDivision.appendChild(document.createTextNode(athleteData.weightDivision));
+                currentRow.appendChild(currentWeightDivision);
+
+                var currentWeight = document.createElement('td');
+                currentWeight.appendChild(document.createTextNode(athleteData.weight));
+                currentRow.appendChild(currentWeight);
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+
+            registeredAthletesTable.appendChild(currentRow);
+        });
+    });
+    
+    tournamentBlock.appendChild(registeredAthletesTable);
 
     return tournamentBlock;
 }
