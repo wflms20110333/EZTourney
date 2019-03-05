@@ -74,8 +74,7 @@ function invalidCredentials(email, password) {
 
 // Add a new athlete entry to the Firebase database.
 function addNewAthlete() {
-    var athletesRef = firestore.collection("athletes");
-    athletesRef.doc(getUserEmail()).set({
+    firestore.collection("athletes").doc(getUserUID()).set({
         name: "",
         year: "",
         gender: "",
@@ -107,6 +106,11 @@ function getUserEmail() {
     return firebase.auth().currentUser.email;
 }
 
+// Returns the signed-in user's uid.
+function getUserUID() {
+    return firebase.auth().currentUser.uid;
+}
+
 // Initiate firebase auth.
 function initFirebaseAuth() {
     // Listen to auth state changes.
@@ -124,12 +128,11 @@ function authStateObserver(user) {
         signOutButtonElement.removeAttribute('hidden');
 
         // Show appropriate tab navigation buttons
-        firestore.doc('/users/' + userEmail).get().then(function(doc) {
-            var data = doc.data();
-            if (data.athlete)
-                for (var i = 0; i < athleteTabButtonElements.length; i++)
-                    athleteTabButtonElements[i].removeAttribute('hidden');
-            if (data.admin)
+        if (userEmail.endsWith('@mit.edu'))
+            for (var i = 0; i < athleteTabButtonElements.length; i++)
+                athleteTabButtonElements[i].removeAttribute('hidden');
+        firestore.doc('/users/permissions').get().then(function(doc) {
+            if (doc.data().admins.includes(userEmail))
                 for (var i = 0; i < adminTabButtonElements.length; i++)
                     adminTabButtonElements[i].removeAttribute('hidden');
         });
@@ -144,6 +147,9 @@ function authStateObserver(user) {
 
         // Hide login screen
         loginScreenElement.setAttribute('hidden', 'true');
+
+        // Show register tab
+        tournamentRegistrationTabButtonClicked();
     } else { // User is signed out!
         // Hide user's profile and sign-out button.
         userEmailElement.setAttribute('hidden', 'true');

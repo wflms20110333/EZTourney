@@ -1,5 +1,7 @@
 // Registers the current user for a tournament.
 function registerForTournamentButtonClicked() {
+    loadAthleteInformation(); // to check if filled
+
     // retrieve values
     var poomsae = eventsPoomsaeElement.checked;
     var sparring = eventsSparringElement.checked;
@@ -21,9 +23,23 @@ function registerForTournamentButtonClicked() {
         return;
     }
 
-    // check equipment sizes are filled out
+    // check that athlete information is completed
+    if (athleteNameElement.value == "" ||
+        athleteYearElement.value == "" ||
+        athleteGenderElement.value == "" ||
+        athleteKerberosElement.value == "" ||
+        athletePhoneNumberElement.value == "" ||
+        athleteBeltElement.value == "" ||
+        athleteWeightDivisionElement.value == "" ||
+        athleteWeightElement.value == "" ||
+        athleteEmergencyContactNameElement.value == "" ||
+        athleteEmergencyContactPhoneElement.vlue == "") {
+        snackbar("Please complete all information on 'Edit Information' tab first");
+        return;
+    }
+
+    // check that equipment sizes are filled out
     if (equipmentBuddy != "") {
-        loadAthleteInformation();
         if (equipmentBuddyHogu && hoguSizeElement.value == 0 ||
             equipmentBuddyHelmet && helmetSizeElement.value == 0 ||
             equipmentBuddyArmGuards && armGuardsSizeElement.value == 0 ||
@@ -38,8 +54,8 @@ function registerForTournamentButtonClicked() {
     
     // submit data
     var tournamentsRef = firestore.collection("tournaments");
-    tournamentsRef.doc(openRegistrationTournamentDocName).collection('registeredAthletes').doc(getUserEmail()).set({
-        userEmail: getUserEmail(),
+    tournamentsRef.doc(openRegistrationTournamentDocName).collection('registeredAthletes').doc(getUserUID()).set({
+        userUID: getUserUID(),
         poomsae: poomsae,
         sparring: sparring,
         equipmentBuddy: equipmentBuddy,
@@ -88,7 +104,7 @@ function updateInformationButtonClicked() {
     }
 
     // submit data
-    firestore.doc('/athletes/' + getUserEmail()).update({
+    firestore.doc('/athletes/' + getUserUID()).update({
         name: name,
         year: year,
         gender: gender,
@@ -118,7 +134,7 @@ function updateEquipmentSizesButtonClicked() {
     var glovesSize = glovesSizeElement.value;
 
     // submit data
-    firestore.doc('/athletes/' + getUserEmail()).update({
+    firestore.doc('/athletes/' + getUserUID()).update({
         hoguSize: hoguSize,
         helmetSize: helmetSize,
         armGuardsSize: armGuardsSize,

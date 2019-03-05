@@ -1,6 +1,6 @@
 // Loads database information into forms
 function loadAthleteInformation() {
-    firestore.doc('/athletes/' + getUserEmail()).get().then(function(doc) {
+    firestore.doc('/athletes/' + getUserUID()).get().then(function(doc) {
         if (doc.exists) {
             // retrieve the document's data
             var data = doc.data();
@@ -13,7 +13,7 @@ function loadAthleteInformation() {
             athletePhoneNumberElement.value = data.phoneNumber;
             athleteBeltElement.value = data.belt;
             athleteWeightDivisionElement.value = data.weightDivision;
-            athleteWeightElement.value = data.weight;
+            athleteWeightElement.value = data.weight == -1 ? '' : data.weight;
             athleteEmergencyContactNameElement.value = data.emergencyContactName;
             athleteEmergencyContactPhoneElement.value = data.emergencyContactPhone
 
@@ -300,6 +300,7 @@ function loadManageTournamentsPage() {
     });
 }
 
+// TODO
 function createTournamentManagementElement(tournamentData, path) {
     // creates the wrapper block for the tournament
     var tournamentBlock = document.createElement('div');
@@ -351,7 +352,7 @@ function createTournamentManagementElement(tournamentData, path) {
         lineBreak.setAttribute('id', 'closeOpenTournamentButtonBr');
         tournamentBlock.appendChild(lineBreak);
     }
-    
+
     /*
     // create show/hide registered athletes button
     var submitButton = document.createElement('a');
