@@ -37,7 +37,7 @@ function register() {
         var errorCode = error.code;
         var errorMessage = error.message;
         if (errorCode == 'auth/email-already-in-use')
-            snackbar('The email address is already in use by another account');
+            snackbar('The email address is already in use by another account.');
     });
 }
 
@@ -56,18 +56,25 @@ function blankCredentials(email, password) {
 
 // Returns true if credentials are invalid.
 function invalidCredentials(email, password) {
+    // valid email address
+    if (!emailFormat.test(email)) {
+        snackbar('Please enter a valid email address.');
+        return;
+    }
+
     // admin account bypass...?
     // mit email
     if (!email.endsWith("@mit.edu")) {
-        snackbar('Please use MIT email');
+        snackbar('Please use MIT email.');
         return true;
     }
-    // authorized mit email?
+
     // password length
     if (password.length < 8 || password.length > 32) {
         snackbar('Password length must be 8-32');
         return true;
     }
+
     // password complexity?
     return false;
 }

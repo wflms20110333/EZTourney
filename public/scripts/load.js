@@ -623,14 +623,16 @@ function loadViewAthletesPage() {
 // Loads the list of admins on the manage users tab
 function loadAdminList() {
     firestore.doc('/users/permissions').get().then(function(doc) {
+        // resets the list of admins
+        removeAllChildren(adminListElement);
         // sorted list of admins
-        var admins = doc.data().admins.sort();
-        for (var i = 0; i < admins.length; i++) {
+        adminList = doc.data().admins.sort();
+        for (var i = 0; i < adminList.length; i++) {
             var optionElement = document.createElement('option');
-            optionElement.setAttribute('value', admins[i]);
-            optionElement.appendChild(document.createTextNode(admins[i]));
+            optionElement.setAttribute('value', adminList[i]);
+            optionElement.appendChild(document.createTextNode(adminList[i]));
             adminListElement.appendChild(optionElement);
         }
-        adminListElement.setAttribute('size', admins.length);
+        adminListElement.setAttribute('size', adminList.length);
     });
 }

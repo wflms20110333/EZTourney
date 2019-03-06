@@ -1,3 +1,6 @@
+// Regex for email validation
+var emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 // The snackbar
 var snackbarElement = document.getElementById('snackbar');
 
@@ -102,3 +105,4 @@ var tournamentElements = [];
 // Manage users elements
 var adminListElement = document.getElementById('adminList');
 var newAdminEmailElement = document.getElementById('newAdminEmail');
+var adminList = [];

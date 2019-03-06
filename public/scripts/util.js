@@ -19,3 +19,9 @@ function snackbar(message) {
 function removeElement(element) {
     element.parentElement.removeChild(element);
 }
+
+// Removes all children of an HTML element
+function removeAllChildren(element) {
+    while (element.firstChild)
+        element.removeChild(element.firstChild);
+}

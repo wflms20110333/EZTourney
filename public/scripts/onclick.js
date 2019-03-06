@@ -227,3 +227,52 @@ function closeOpenTournamentButtonClicked() {
         console.error("Error updating document: ", error);
     });
 }
+
+// Removes an admin
+function removeAdminButtonClicked() {
+    // retrieves the email address to remove
+    var toRemove = adminListElement.value;
+
+    // check if no email is selected
+    if (toRemove == '') {
+        snackbar('You have not selected an admin to remove.');
+        return;
+    }
+
+    // removes admin
+    adminList.splice(adminList.indexOf(toRemove), 1);
+    firestore.doc('users/permissions').update({
+        admins: adminList
+    }).then(function() {
+        loadAdminList();
+        snackbar('Admin removed!');
+    }).catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+    });
+}
+
+// Adds a new admin
+function addNewAdminButtonClicked() {
+    // retrieves the email address to add
+    var toAdd = newAdminEmailElement.value;
+
+    // check if email address is invalid
+    if (!emailFormat.test(toAdd)) {
+        snackbar('Please enter a valid email address.');
+        return;
+    }
+    snackbar('Success!');
+
+    // adds admin
+    adminList.push(toAdd);
+    firestore.doc('users/permissions').update({
+        admins: adminList
+    }).then(function() {
+        loadAdminList();
+        snackbar('Admin added!');
+    }).catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", error);
+    });
+}

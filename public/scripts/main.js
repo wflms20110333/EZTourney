@@ -18,11 +18,11 @@ manageUsersTabButtonElement.addEventListener('click', manageUsersTabButtonClicke
 signInButtonElement.addEventListener('click', signIn);
 signOutButtonElement.addEventListener('click', signOut);
 registerButtonElement.addEventListener('click', register);
-// registerForTournamentButtonElement is null right now
-// registerForTournamentButtonElement.addEventListener('click', registerForTournamentButtonClicked);
 updateAthleteInformationButtonElement.addEventListener('click', updateInformationButtonClicked);
 updateEquipmentSizesButtonElement.addEventListener('click', updateEquipmentSizesButtonClicked);
 createTournamentButtonElement.addEventListener('click', createTournamentButtonClicked);
+removeAdminButtonElement.addEventListener('click', removeAdminButtonClicked);
+addNewAdminButtonElement.addEventListener('click', addNewAdminButtonClicked);
 
 // initialize Firebase
 initFirebaseAuth();
