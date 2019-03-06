@@ -365,7 +365,7 @@ function createTournamentManagementElement(tournamentData, path) {
         closeTournamentButton.setAttribute('target', '_blank');
         closeTournamentButton.setAttribute('id', 'closeOpenTournament');
         closeTournamentButton.appendChild(document.createTextNode('Close registration'));
-        closeTournamentButton.addEventListener('click', closeOpenTournament);
+        closeTournamentButton.addEventListener('click', closeOpenTournamentButtonClicked);
         tournamentBlock.appendChild(closeTournamentButton);
 
         var lineBreak = document.createElement('br');
@@ -499,7 +499,7 @@ function loadViewAthletesPage() {
     
     // create title element
     var title = document.createElement('h1');
-    title.appendChild(document.createTextNode('Athletes'));
+    title.appendChild(document.createTextNode('Athletes (alphabetical by name)'));
     displayBlock.appendChild(title);
 
     // create athletes table
@@ -617,4 +617,20 @@ function loadViewAthletesPage() {
     displayBlock.appendChild(athletesTable);
 
     viewAthletesTabElement.appendChild(displayBlock);
+    viewAthletesTabElement.appendChild(createCopyrightElement());
+}
+
+// Loads the list of admins on the manage users tab
+function loadAdminList() {
+    firestore.doc('/users/permissions').get().then(function(doc) {
+        // sorted list of admins
+        var admins = doc.data().admins.sort();
+        for (var i = 0; i < admins.length; i++) {
+            var optionElement = document.createElement('option');
+            optionElement.setAttribute('value', admins[i]);
+            optionElement.appendChild(document.createTextNode(admins[i]));
+            adminListElement.appendChild(optionElement);
+        }
+        adminListElement.setAttribute('size', admins.length);
+    });
 }

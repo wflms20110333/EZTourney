@@ -28,6 +28,11 @@ function viewAthletesTabButtonClicked() {
     tabButtonClicked(viewAthletesTabButtonElement, viewAthletesTabElement);
 }
 
+// When the tab button for manage users is clicked
+function manageUsersTabButtonClicked() {
+    tabButtonClicked(manageUsersTabButtonElement, manageUsersTabElement);
+}
+
 // Toggles the tab buttons when a button is clicked
 function tabButtonClicked(buttonClicked, tabToShow) {
     for (var i = 0; i < tabButtonElements.length; i++) {

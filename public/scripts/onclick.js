@@ -207,7 +207,7 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
 }
 
 // Closes the tournament currently open (there should be at most one)
-function closeOpenTournament() {
+function closeOpenTournamentButtonClicked() {
     // checks if no tournament is open for registration
     if (openRegistrationTournamentDocName == "") {
         console.log('No open tournaments to close');

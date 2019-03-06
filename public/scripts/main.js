@@ -12,6 +12,7 @@ equipmentSizesTabButtonElement.addEventListener('click', equipmentSizesTabButton
 createTournamentTabButtonElement.addEventListener('click', createTournamentTabButtonClicked);
 manageTournamentsTabButtonElement.addEventListener('click', manageTournamentsTabButtonClicked);
 viewAthletesTabButtonElement.addEventListener('click', viewAthletesTabButtonClicked);
+manageUsersTabButtonElement.addEventListener('click', manageUsersTabButtonClicked);
 
 // Attach onclick methods for buttons
 signInButtonElement.addEventListener('click', signIn);

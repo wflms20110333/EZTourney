@@ -140,6 +140,8 @@ function authStateObserver(user) {
                     adminTabButtonElements[i].removeAttribute('hidden');
                 // Loads information from database
                 loadManageTournamentsPage();
+                loadViewAthletesPage();
+                loadAdminList();
                 // Show manage tournaments tab
                 manageTournamentsTabButtonClicked();
             }

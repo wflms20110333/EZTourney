@@ -11,13 +11,16 @@ var equipmentSizesTabButtonElement = document.getElementById('equipmentSizesTabB
 var createTournamentTabButtonElement = document.getElementById('createTournamentTabButton');
 var manageTournamentsTabButtonElement = document.getElementById('manageTournamentsTabButton');
 var viewAthletesTabButtonElement = document.getElementById('viewAthletesTabButton');
+var manageUsersTabButtonElement = document.getElementById('manageUsersTabButton');
 
 var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
     equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement, 
-    viewAthletesTabButtonElement];
+    viewAthletesTabButtonElement, manageUsersTabButtonElement];
 
-var athleteTabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, equipmentSizesTabButtonElement];
-var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement, viewAthletesTabButtonElement];
+var athleteTabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
+    equipmentSizesTabButtonElement];
+var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement, 
+    viewAthletesTabButtonElement, manageUsersTabButtonElement];
 
 // Tab elements
 var tournamentRegistrationTabElement = document.getElementById('tournamentRegistrationTab');
@@ -26,9 +29,10 @@ var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
 var createTournamentTabElement = document.getElementById('createTournamentTab');
 var manageTournamentsTabElement = document.getElementById('manageTournamentsTab');
 var viewAthletesTabElement = document.getElementById('viewAthletesTab');
+var manageUsersTabElement = document.getElementById('manageUsersTab');
 
 var tabElements = [tournamentRegistrationTabElement, editInformationTabElement, equipmentSizesTabElement, 
-    createTournamentTabElement, manageTournamentsTabElement, viewAthletesTabElement];
+    createTournamentTabElement, manageTournamentsTabElement, viewAthletesTabElement, manageUsersTabElement];
 
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');
@@ -46,6 +50,8 @@ var registerForTournamentButtonElement = document.getElementById('registerForTou
 var updateAthleteInformationButtonElement = document.getElementById('updateInformation');
 var updateEquipmentSizesButtonElement = document.getElementById('updateSizes');
 var createTournamentButtonElement = document.getElementById('createTournament');
+var removeAdminButtonElement = document.getElementById('removeAdmin');
+var addNewAdminButtonElement = document.getElementById('addNewAdmin');
 
 // Tournament registration elements
 var openRegistrationTournamentDocName = ""; // need to assign later
@@ -90,5 +96,9 @@ var tournamentSignUpDueDateElement = document.getElementById('tournamentSignUpDu
 var tournamentFeesElement = document.getElementById('tournamentFees');
 var tournamentContactElement = document.getElementById('tournamentContact');
 
-// Manage tournament elements
+// Manage tournaments elements
 var tournamentElements = [];
+
+// Manage users elements
+var adminListElement = document.getElementById('adminList');
+var newAdminEmailElement = document.getElementById('newAdminEmail');
