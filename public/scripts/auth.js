@@ -111,6 +111,11 @@ function getUserUID() {
     return firebase.auth().currentUser.uid;
 }
 
+// Returns whether a user is an athlete.
+function isAthlete() {
+    return getUserEmail().endsWith('@mit.edu');
+}
+
 // Initiate firebase auth.
 function initFirebaseAuth() {
     // Listen to auth state changes.
@@ -127,29 +132,36 @@ function authStateObserver(user) {
         userEmailElement.removeAttribute('hidden');
         signOutButtonElement.removeAttribute('hidden');
 
-        // Show appropriate tab navigation buttons
-        if (userEmail.endsWith('@mit.edu'))
-            for (var i = 0; i < athleteTabButtonElements.length; i++)
-                athleteTabButtonElements[i].removeAttribute('hidden');
+        // If user is an admin
         firestore.doc('/users/permissions').get().then(function(doc) {
-            if (doc.data().admins.includes(userEmail))
+            if (doc.data().admins.includes(userEmail)) {
+                // Show appropriate tab navigation buttons
                 for (var i = 0; i < adminTabButtonElements.length; i++)
                     adminTabButtonElements[i].removeAttribute('hidden');
+                // Loads information from database
+                loadManageTournamentsPage();
+                // Show manage tournaments tab
+                manageTournamentsTabButtonClicked();
+            }
         });
+
+        // If user is an athlete
+        if (isAthlete()) {
+            // Show appropriate tab navigation buttons
+            for (var i = 0; i < athleteTabButtonElements.length; i++)
+                athleteTabButtonElements[i].removeAttribute('hidden');
+            // Loads information from database
+            loadAthleteInformation();
+            loadOpenTournamentRegistrations();
+            // Show register tab
+            tournamentRegistrationTabButtonClicked();
+        }
 
         // Show tab navigation bar
         pageTabElement.removeAttribute('hidden');
 
-        // Loads information from database
-        loadAthleteInformation();
-        loadOpenTournamentRegistrations();
-        loadManageTournamentsPage();
-
         // Hide login screen
         loginScreenElement.setAttribute('hidden', 'true');
-
-        // Show register tab
-        tournamentRegistrationTabButtonClicked();
     } else { // User is signed out!
         // Hide user's profile and sign-out button.
         userEmailElement.setAttribute('hidden', 'true');
