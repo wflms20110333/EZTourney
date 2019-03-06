@@ -23,6 +23,11 @@ function manageTournamentsTabButtonClicked() {
     tabButtonClicked(manageTournamentsTabButtonElement, manageTournamentsTabElement);
 }
 
+// When the tab button for view athletes is clicked
+function viewAthletesTabButtonClicked() {
+    tabButtonClicked(viewAthletesTabButtonElement, viewAthletesTabElement);
+}
+
 // Toggles the tab buttons when a button is clicked
 function tabButtonClicked(buttonClicked, tabToShow) {
     for (var i = 0; i < tabButtonElements.length; i++) {

@@ -10,12 +10,14 @@ var editInformationTabButtonElement = document.getElementById('editInformationTa
 var equipmentSizesTabButtonElement = document.getElementById('equipmentSizesTabButton');
 var createTournamentTabButtonElement = document.getElementById('createTournamentTabButton');
 var manageTournamentsTabButtonElement = document.getElementById('manageTournamentsTabButton');
+var viewAthletesTabButtonElement = document.getElementById('viewAthletesTabButton');
 
 var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
-    equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement];
+    equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement, 
+    viewAthletesTabButtonElement];
 
 var athleteTabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, equipmentSizesTabButtonElement];
-var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement];
+var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement, viewAthletesTabButtonElement];
 
 // Tab elements
 var tournamentRegistrationTabElement = document.getElementById('tournamentRegistrationTab');
@@ -23,9 +25,10 @@ var editInformationTabElement = document.getElementById('editInformationTab');
 var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
 var createTournamentTabElement = document.getElementById('createTournamentTab');
 var manageTournamentsTabElement = document.getElementById('manageTournamentsTab');
+var viewAthletesTabElement = document.getElementById('viewAthletesTab');
 
-var tabElements = [tournamentRegistrationTabElement, editInformationTabElement, 
-    equipmentSizesTabElement, createTournamentTabElement, manageTournamentsTabElement];
+var tabElements = [tournamentRegistrationTabElement, editInformationTabElement, equipmentSizesTabElement, 
+    createTournamentTabElement, manageTournamentsTabElement, viewAthletesTabElement];
 
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');

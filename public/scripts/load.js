@@ -490,3 +490,131 @@ function createTournamentManagementElement(tournamentData, path) {
 
     return tournamentBlock;
 }
+
+// Loads athlete information for admin viewing
+function loadViewAthletesPage() {
+    // creates the wrapper block for the tournament
+    var displayBlock = document.createElement('div');
+    displayBlock.setAttribute('class', 'inputForm inputFormLarge');
+    
+    // create title element
+    var title = document.createElement('h1');
+    title.appendChild(document.createTextNode('Athletes'));
+    displayBlock.appendChild(title);
+
+    // create athletes table
+    var athletesTable = document.createElement('table');
+
+    var headerRow = document.createElement('tr');
+
+    var headerName = document.createElement('th');
+    headerName.appendChild(document.createTextNode('Name'));
+    headerRow.appendChild(headerName);
+
+    var headerYear = document.createElement('th');
+    headerYear.appendChild(document.createTextNode('Year'));
+    headerRow.appendChild(headerYear);
+
+    var headerGender = document.createElement('th');
+    headerGender.appendChild(document.createTextNode('Gender'));
+    headerRow.appendChild(headerGender);
+
+    var headerKerberos = document.createElement('th');
+    headerKerberos.appendChild(document.createTextNode('Kerberos'));
+    headerRow.appendChild(headerKerberos);
+
+    var headerPhoneNumber = document.createElement('th');
+    headerPhoneNumber.appendChild(document.createTextNode('Phone'));
+    headerRow.appendChild(headerPhoneNumber);
+
+    var headerBelt = document.createElement('th');
+    headerBelt.appendChild(document.createTextNode('Belt'));
+    headerRow.appendChild(headerBelt);
+
+    var headerWeightDivision = document.createElement('th');
+    headerWeightDivision.appendChild(document.createTextNode('Weight Division'));
+    headerRow.appendChild(headerWeightDivision);
+
+    var headerWeight = document.createElement('th');
+    headerWeight.appendChild(document.createTextNode('Weight'));
+    headerRow.appendChild(headerWeight);
+
+    var headerEmergencyContactName = document.createElement('th');
+    headerEmergencyContactName.appendChild(document.createTextNode('Emergency Contact Name'));
+    headerRow.appendChild(headerEmergencyContactName);
+
+    var headerEmergencyContactPhone = document.createElement('th');
+    headerEmergencyContactPhone.appendChild(document.createTextNode('Emergency Contact Phone'));
+    headerRow.appendChild(headerEmergencyContactPhone);
+
+    athletesTable.appendChild(headerRow);
+    
+    firestore.collection('athletes').get().then(function(querySnapshot) {
+        // creates a list and dictionary that will sort the athletes alphabetically
+        athleteNames = [];
+        elementsDictionary = {};
+
+        // processes each athlete document
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            var athleteData = doc.data();
+
+            // if the athlete's information is not filled out, does not add them to the table
+            if (athleteData.name != null && athleteData.name != '') {
+                var currentRow = document.createElement('tr');
+
+                var currentName = document.createElement('td');
+                currentName.appendChild(document.createTextNode(athleteData.name));
+                currentRow.appendChild(currentName);
+
+                var currentYear = document.createElement('td');
+                currentYear.appendChild(document.createTextNode(athleteData.year));
+                currentRow.appendChild(currentYear);
+
+                var currentGender = document.createElement('td');
+                currentGender.appendChild(document.createTextNode(athleteData.gender));
+                currentRow.appendChild(currentGender);
+
+                var currentKerberos = document.createElement('td');
+                currentKerberos.appendChild(document.createTextNode(athleteData.kerberos));
+                currentRow.appendChild(currentKerberos);
+
+                var currentPhoneNumber = document.createElement('td');
+                currentPhoneNumber.appendChild(document.createTextNode(athleteData.phoneNumber));
+                currentRow.appendChild(currentPhoneNumber);
+
+                var currentBelt = document.createElement('td');
+                currentBelt.appendChild(document.createTextNode(athleteData.belt));
+                currentRow.appendChild(currentBelt);
+
+                var currentWeightDivision = document.createElement('td');
+                currentWeightDivision.appendChild(document.createTextNode(athleteData.weightDivision));
+                currentRow.appendChild(currentWeightDivision);
+
+                var currentWeight = document.createElement('td');
+                currentWeight.appendChild(document.createTextNode(athleteData.weight));
+                currentRow.appendChild(currentWeight);
+
+                var currentEmergencyContactName = document.createElement('td');
+                currentEmergencyContactName.appendChild(document.createTextNode(athleteData.emergencyContactName));
+                currentRow.appendChild(currentEmergencyContactName);
+
+                var currentEmergencyContactPhone = document.createElement('td');
+                currentEmergencyContactPhone.appendChild(document.createTextNode(athleteData.emergencyContactPhone));
+                currentRow.appendChild(currentEmergencyContactPhone);
+
+                athleteNames.push(athleteData.name);
+                elementsDictionary[athleteData.name] = currentRow;
+            }
+        });
+
+        // sorts athletes by name and append them to the table
+        athleteNames.sort();
+        for (var i = 0; i < athleteNames.length; i++)
+            athletesTable.appendChild(elementsDictionary[athleteNames[i]]);
+    });
+
+    displayBlock.appendChild(athletesTable);
+
+    viewAthletesTabElement.appendChild(displayBlock);
+}
