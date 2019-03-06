@@ -34,7 +34,7 @@ function registerForTournamentButtonClicked() {
         athleteWeightElement.value == "" ||
         athleteEmergencyContactNameElement.value == "" ||
         athleteEmergencyContactPhoneElement.vlue == "") {
-        snackbar("Please complete all information on 'Edit Information' tab first");
+        snackbar("Please complete all information on the 'Edit Information' tab first");
         return;
     }
 
@@ -47,7 +47,7 @@ function registerForTournamentButtonClicked() {
             equipmentBuddyGloves && glovesSizeElement.value ||
             equipmentBuddyFeetProtectors && socksSizeElement.value == 0 ||
             equipmentBuddyESocks && socksSizeElement.value == 0) {
-            snackbar("Please fill out sizes for checked equipment on 'Equipment Sizes' tab");
+            snackbar("Please fill out sizes for checked equipment on the 'Equipment Sizes' tab");
             return;
         }
     }
@@ -258,11 +258,10 @@ function addNewAdminButtonClicked() {
     var toAdd = newAdminEmailElement.value;
 
     // check if email address is invalid
-    if (!emailFormat.test(toAdd)) {
+    if (!isValidEmailAddress(toAdd)) {
         snackbar('Please enter a valid email address.');
         return;
     }
-    snackbar('Success!');
 
     // adds admin
     adminList.push(toAdd);

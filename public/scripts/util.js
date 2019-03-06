@@ -6,7 +6,7 @@ function concatenateString(strs) {
     return ret;
 }
 
-// Displays a message with the snackbar.
+// Displays a message with the snackbar
 function snackbar(message) {
     var data = {
         message: message,
@@ -24,4 +24,9 @@ function removeElement(element) {
 function removeAllChildren(element) {
     while (element.firstChild)
         element.removeChild(element.firstChild);
+}
+
+// Returns whether or not a string is a valid email address
+function isValidEmailAddress(email) {
+    return emailFormat.test(email);
 }

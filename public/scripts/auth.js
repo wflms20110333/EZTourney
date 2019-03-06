@@ -57,7 +57,7 @@ function blankCredentials(email, password) {
 // Returns true if credentials are invalid.
 function invalidCredentials(email, password) {
     // valid email address
-    if (!emailFormat.test(email)) {
+    if (!isValidEmailAddress(email)) {
         snackbar('Please enter a valid email address.');
         return;
     }
