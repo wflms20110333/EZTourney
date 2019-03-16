@@ -195,6 +195,9 @@ function authStateObserver(user) {
         // show signed out tab navigation buttons
         for (var i = 0; i < signedOutTabButtonElements.length; i++)
             signedOutTabButtonElements[i].removeAttribute('hidden');
+        // clear values on login tab
+        emailInputElement.value = '';
+        passwordInputElement.value = '';
         // focus on the login tab
         loginTabButtonClicked();
     }
