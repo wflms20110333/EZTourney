@@ -62,10 +62,10 @@ function invalidCredentials(email, password) {
         return;
     }
 
-    // admin account bypass...?
-    // mit email
-    if (!email.endsWith("@mit.edu")) {
-        snackbar('Please use MIT email.');
+    // checks that mit email or authorized admin email is used
+    if (!email.endsWith("@mit.edu") &&
+        !adminList.includes(email)) {
+        snackbar('Please use MIT email or authorized admin email.');
         return true;
     }
 
@@ -108,6 +108,22 @@ function addNewAthlete() {
 //     return !!firebase.auth().currentUser;
 // }
 
+// Returns whether the signed-in user's email is verified.
+function isEmailVerified() {
+    return firebase.auth().currentUser.emailVerified;
+}
+
+// Sends a verification email to the signed-in user.
+function sendVerificationEmail() {
+    firebase.auth().currentUser.sendEmailVerification().then(function() {
+        // Email sent.
+        snackbar('Verification email successfully sent!');
+    }).catch(function(error) {
+        // An error happened.
+        snackbar('Failed to send verification email.');
+    });
+}
+
 // Returns the signed-in user's display name.
 function getUserEmail() {
     return firebase.auth().currentUser.email;
@@ -131,6 +147,9 @@ function initFirebaseAuth() {
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 function authStateObserver(user) {
+    // loads list of admins no matter what
+    loadAdminList();
+
     if (user) { // User is signed in!
         var userEmail = getUserEmail();
         userEmailElement.textContent = userEmail;
@@ -139,35 +158,55 @@ function authStateObserver(user) {
         userEmailElement.removeAttribute('hidden');
         signOutButtonElement.removeAttribute('hidden');
 
-        // If user is an admin
-        firestore.doc('/users/permissions').get().then(function(doc) {
-            if (doc.data().admins.includes(userEmail)) {
+        if (isEmailVerified()) {
+            // If user is an admin
+            firestore.doc('/users/permissions').get().then(function(doc) {
+                if (doc.data().admins.includes(userEmail)) {
+                    // Show appropriate tab navigation buttons
+                    for (var i = 0; i < adminTabButtonElements.length; i++)
+                        adminTabButtonElements[i].removeAttribute('hidden');
+                    // Loads information from database
+                    loadManageTournamentsPage();
+                    loadViewAthletesPage();
+                    // Show manage tournaments tab
+                    manageTournamentsTabButtonClicked();
+                }
+            });
+
+            // If user is an athlete
+            if (isAthlete()) {
                 // Show appropriate tab navigation buttons
-                for (var i = 0; i < adminTabButtonElements.length; i++)
-                    adminTabButtonElements[i].removeAttribute('hidden');
+                for (var i = 0; i < athleteTabButtonElements.length; i++)
+                    athleteTabButtonElements[i].removeAttribute('hidden');
                 // Loads information from database
-                loadManageTournamentsPage();
-                loadViewAthletesPage();
-                loadAdminList();
-                // Show manage tournaments tab
-                manageTournamentsTabButtonClicked();
+                loadAthleteInformation();
+                loadOpenTournamentRegistrations();
+                // Show register tab
+                tournamentRegistrationTabButtonClicked();
+            } else {
+                // display email verification screen
             }
-        });
 
-        // If user is an athlete
-        if (isAthlete()) {
-            // Show appropriate tab navigation buttons
-            for (var i = 0; i < athleteTabButtonElements.length; i++)
-                athleteTabButtonElements[i].removeAttribute('hidden');
-            // Loads information from database
-            loadAthleteInformation();
-            loadOpenTournamentRegistrations();
-            // Show register tab
-            tournamentRegistrationTabButtonClicked();
+            // Show tab navigation bar
+            pageTabElement.removeAttribute('hidden');
+
+            // Hide email verification screen
+            emailVerificationScreenElement.setAttribute('hidden', 'true');
+        } else {
+            // Show email verification screen
+            emailVerificationScreenElement.removeAttribute('hidden');
+
+            // Hide all tab navigation buttons
+            for (var i = 0; i < tabButtonElements.length; i++)
+                tabButtonElements[i].setAttribute('hidden', 'true');
+
+            // Hide tab navigation bar
+            pageTabElement.setAttribute('hidden', 'true');
+
+            // Hide all other screens
+            for (var i = 0; i < tabElements.length; i++)
+                tabElements[i].setAttribute('hidden', 'true');
         }
-
-        // Show tab navigation bar
-        pageTabElement.removeAttribute('hidden');
 
         // Hide login screen
         loginScreenElement.setAttribute('hidden', 'true');
@@ -186,6 +225,9 @@ function authStateObserver(user) {
         // Hide all other screens
         for (var i = 0; i < tabElements.length; i++)
             tabElements[i].setAttribute('hidden', 'true');
+        
+        // Hide email verification screen
+        emailVerificationScreenElement.setAttribute('hidden', 'true');
 
         // Show login screen
         loginScreenElement.removeAttribute('hidden');

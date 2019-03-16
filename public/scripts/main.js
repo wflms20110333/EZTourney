@@ -6,6 +6,7 @@ const settings = {
 firestore.settings(settings);
 
 // Attach onclick methods for tab buttons
+passwordResetTabButtonElement.addEventListener('click', passwordResetTabButtonClicked);
 tournamentRegistrationTabButtonElement.addEventListener('click', tournamentRegistrationTabButtonClicked);
 editInformationTabButtonElement.addEventListener('click', editInformationTabButtonClicked);
 equipmentSizesTabButtonElement.addEventListener('click', equipmentSizesTabButtonClicked);
@@ -17,6 +18,8 @@ manageUsersTabButtonElement.addEventListener('click', manageUsersTabButtonClicke
 // Attach onclick methods for buttons
 signInButtonElement.addEventListener('click', signIn);
 signOutButtonElement.addEventListener('click', signOut);
+verifyEmailButtonElement.addEventListener('click', sendVerificationEmail);
+resetPasswordButtonElement.addEventListener('click', resetPasswordButtonClicked);
 registerButtonElement.addEventListener('click', register);
 updateAthleteInformationButtonElement.addEventListener('click', updateInformationButtonClicked);
 updateEquipmentSizesButtonElement.addEventListener('click', updateEquipmentSizesButtonClicked);

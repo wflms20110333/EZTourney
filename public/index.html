@@ -43,6 +43,7 @@
                 </div>
                 <!-- Tab navigation bar -->
                 <div hidden class="mdl-layout__tab-bar mdl-color--light-blue-600" id="pageTab">
+                    <a hidden class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="passwordResetTabButton">Password Reset</a>
                     <a hidden class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="tournamentRegistrationTabButton">Register</a>
                     <a hidden class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="editInformationTabButton">Edit Information</a>
                     <a hidden class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect" id="equipmentSizesTabButton">Equipment Sizes</a>
@@ -53,12 +54,18 @@
                 </div>
             </header>
 
-            <!-- Login screen -->
+            <!-- Snackbar notifications -->
+            <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+
+            <!-- Login Screen -->
             <div hidden class="formContainer" id="loginScreen">
                 <div class="inputForm">
                     <h2>Welcome</h2>
                     <h1>Login</h1>
-                    <p>You're seeing this because you have not signed in yet. Please login with your MIT email!</p>
+                    <p>You're seeing this because you have not signed in yet. Please login/register with your MIT email! (or if you're an instructor given admin privileges with a personal email, please use that one)</p>
                     <input class="inputText" id="email" type="text" placeholder="Username (Email)"/>
                     <input class="inputText" id="password" type="password" placeholder="Password" />
                     <a class="button" target="_blank" id="signIn">Sign in</a>
@@ -67,10 +74,30 @@
                 <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
-            <!-- Snackbar notifications -->
-            <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
-                <div class="mdl-snackbar__text"></div>
-                <button class="mdl-snackbar__action" type="button"></button>
+            <!-- Email Verification Screen -->
+            <div hidden class="formContainer" id="emailVerificationScreen">
+                <div class="inputForm">
+                    <h1>Email Verification</h1>
+                    <p>Please verify your email address so we know that it's really you! (and not some troll tryna make poor shubhanga's life hard 😉)</p>
+                    <a class="button" target="_blank" id="verifyEmail">Verify My Email</a>
+                </div>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
+            </div>
+
+            <!-- User Screen: Password Reset -->
+            <div hidden class="formContainer" id="passwordResetTab">
+                <div class="inputForm">
+                    <h1>Password Reset</h1>
+                    <p>Forgotten your password? Enter your email address, and we'll email instructions for setting a new one.</p>
+                    
+                    <div class="formInput">
+                        <div class="inputLabel requiredField">Email</div>
+                        <input class="inputText" id="passwordResetEmail" type="text"/>
+                    </div>
+
+                    <a class="button" target="_blank" id="resetPassword">Reset My Password</a>
+                </div>
+                <p class="copyright">Copyright © 2019 MIT Sport Taekwondo</p>
             </div>
 
             <!-- Athlete Screen: Tournament Registration -->

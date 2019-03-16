@@ -8,6 +8,7 @@ var snackbarElement = document.getElementById('snackbar');
 var pageTabElement = document.getElementById('pageTab');
 
 // Tab button elements
+var passwordResetTabButtonElement = document.getElementById('passwordResetTabButton');
 var tournamentRegistrationTabButtonElement = document.getElementById('tournamentRegistrationTabButton');
 var editInformationTabButtonElement = document.getElementById('editInformationTabButton');
 var equipmentSizesTabButtonElement = document.getElementById('equipmentSizesTabButton');
@@ -16,16 +17,17 @@ var manageTournamentsTabButtonElement = document.getElementById('manageTournamen
 var viewAthletesTabButtonElement = document.getElementById('viewAthletesTabButton');
 var manageUsersTabButtonElement = document.getElementById('manageUsersTabButton');
 
-var tabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
+var tabButtonElements = [passwordResetTabButtonElement, tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
     equipmentSizesTabButtonElement, createTournamentTabButtonElement, manageTournamentsTabButtonElement, 
     viewAthletesTabButtonElement, manageUsersTabButtonElement];
 
-var athleteTabButtonElements = [tournamentRegistrationTabButtonElement, editInformationTabButtonElement, 
-    equipmentSizesTabButtonElement];
-var adminTabButtonElements = [createTournamentTabButtonElement, manageTournamentsTabButtonElement, 
-    viewAthletesTabButtonElement, manageUsersTabButtonElement];
+var athleteTabButtonElements = [passwordResetTabButtonElement, tournamentRegistrationTabButtonElement, 
+    editInformationTabButtonElement, equipmentSizesTabButtonElement];
+var adminTabButtonElements = [passwordResetTabButtonElement, createTournamentTabButtonElement, 
+    manageTournamentsTabButtonElement, viewAthletesTabButtonElement, manageUsersTabButtonElement];
 
 // Tab elements
+var passwordResetTabElement = document.getElementById('passwordResetTab');
 var tournamentRegistrationTabElement = document.getElementById('tournamentRegistrationTab');
 var editInformationTabElement = document.getElementById('editInformationTab');
 var equipmentSizesTabElement = document.getElementById('equipmentSizesTab');
@@ -34,8 +36,9 @@ var manageTournamentsTabElement = document.getElementById('manageTournamentsTab'
 var viewAthletesTabElement = document.getElementById('viewAthletesTab');
 var manageUsersTabElement = document.getElementById('manageUsersTab');
 
-var tabElements = [tournamentRegistrationTabElement, editInformationTabElement, equipmentSizesTabElement, 
-    createTournamentTabElement, manageTournamentsTabElement, viewAthletesTabElement, manageUsersTabElement];
+var tabElements = [passwordResetTabElement, tournamentRegistrationTabElement, editInformationTabElement, 
+    equipmentSizesTabElement, createTournamentTabElement, manageTournamentsTabElement, viewAthletesTabElement, 
+    manageUsersTabElement];
 
 // Login elements
 var loginScreenElement = document.getElementById('loginScreen');
@@ -47,6 +50,14 @@ var registerButtonElement = document.getElementById('register');
 // Logout elements
 var userEmailElement = document.getElementById('userEmail');
 var signOutButtonElement = document.getElementById('signOut');
+
+// Email verification elements
+var emailVerificationScreenElement = document.getElementById('emailVerificationScreen');
+var verifyEmailButtonElement = document.getElementById('verifyEmail');
+
+// Password reset elements
+var passwordResetEmailElement = document.getElementById('passwordResetEmail');
+var resetPasswordButtonElement = document.getElementById('resetPassword');
 
 // Form submission elements
 var registerForTournamentButtonElement = document.getElementById('registerForTournament');

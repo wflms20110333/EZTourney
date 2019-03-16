@@ -1,3 +1,23 @@
+// Sends a password reset email.
+function resetPasswordButtonClicked() {
+    var email = passwordResetEmailElement.value;
+    if (!isValidEmailAddress(email)) {
+        snackbar('Please enter a valid email address.');
+        return;
+    }
+
+    firebase.auth().sendPasswordResetEmail(email).then(function() {
+        // Email sent.
+        snackbar('Password reset email successfully sent!');
+    }).catch(function(error) {
+        // An error happened.
+        if (error.code == 'auth/user-not-found')
+            snackbar('There is no user record corresponding to this email.');
+        else
+            snackbar(error.message);
+    });
+}
+
 // Registers the current user for a tournament.
 function registerForTournamentButtonClicked() {
     loadAthleteInformation(); // to check if filled

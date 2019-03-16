@@ -1,3 +1,8 @@
+// When the tab button for password reset is clicked
+function passwordResetTabButtonClicked() {
+    tabButtonClicked(passwordResetTabButtonElement, passwordResetTabElement);
+}
+
 // When the tab button for tournament registration is clicked
 function tournamentRegistrationTabButtonClicked() {
     tabButtonClicked(tournamentRegistrationTabButtonElement, tournamentRegistrationTabElement);
