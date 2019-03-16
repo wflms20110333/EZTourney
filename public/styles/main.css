@@ -8,7 +8,8 @@ body {
     margin: 0;
     padding: 0;
 }
-/* Material Design Lite elements */
+
+/* Header */
 .mdl-layout__header-row {
     padding: 0;
     margin: 0 auto;
@@ -21,6 +22,8 @@ body {
     max-width: 1024px;
     margin: auto;
 }
+
+/* Tab navigation bar */
 .mdl-layout__tab {
     padding:0 12px;
     color: rgba(255,255,255,.6);
@@ -31,12 +34,15 @@ body {
 }
 .mdl-layout__tab-bar {
     width: 100%;
-    padding: 0 0 0 60px
+    padding: 0 0 0 0px;
 }
-/* There's something weird with the MDL css */
+
+/* Disable left right scrolling button */
 .mdl-layout__tab-bar-button {
     visibility: hidden;
 }
+
+/* Set hover color */
 .mdl-button:hover {
     background-color: rgba(62, 194, 255, 0.5);
 }
@@ -157,14 +163,17 @@ textarea {
     font-size: 13px;
 }
 
+/* When the screen size is large */
+@media screen and (min-width: 1175px) {
+    .mdl-layout__tab-bar {
+        padding: 0 0 0 30px;
+    }
+}
 /* When the screen size is limited */
 @media screen and (max-width: 610px) {
     header {
         height: 113px;
         padding-bottom: 80px !important;
-    }
-    .mdl-layout__tab-bar {
-        visibility: hidden;
     }
     #userContainer {
         top: 72px;
@@ -172,6 +181,16 @@ textarea {
         height: 38px;
         padding-top: 3px;
         padding-right: 2px;
+    }
+    .tab-button {
+        background-color: #0288d1;
+    }
+    .tab-button:hover {
+        background-color: #039be5;
+    }
+    .tab-button.isOnPage {
+        color: rgba(255,255,255,1);
+        background-color: #039be5;
     }
 }
 
