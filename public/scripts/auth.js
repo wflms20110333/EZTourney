@@ -103,11 +103,6 @@ function addNewAthlete() {
     });
 }
 
-// // Returns true if a user is signed-in.
-// function isUserSignedIn() {
-//     return !!firebase.auth().currentUser;
-// }
-
 // Returns whether the signed-in user's email is verified.
 function isEmailVerified() {
     return firebase.auth().currentUser.emailVerified;
