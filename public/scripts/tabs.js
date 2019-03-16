@@ -1,6 +1,16 @@
+// When the tab button for login is clicked
+function loginTabButtonClicked() {
+    tabButtonClicked(loginTabButtonElement, loginTabElement);
+}
+
 // When the tab button for password reset is clicked
 function passwordResetTabButtonClicked() {
     tabButtonClicked(passwordResetTabButtonElement, passwordResetTabElement);
+}
+
+// When the tab button for email verification is clicked
+function emailVerificationTabButtonClicked() {
+    tabButtonClicked(emailVerificationTabButtonElement, emailVerificationTabElement);
 }
 
 // When the tab button for tournament registration is clicked

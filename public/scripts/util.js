@@ -30,3 +30,14 @@ function removeAllChildren(element) {
 function isValidEmailAddress(email) {
     return emailFormat.test(email);
 }
+
+// Hides all tab navigation buttons and tabs
+function hideAllTabButtonsAndTabs() {
+    // Hide all tab navigation buttons
+    for (var i = 0; i < tabButtonElements.length; i++)
+        tabButtonElements[i].setAttribute('hidden', 'true');
+
+    // Hide all tabs
+    for (var i = 0; i < tabElements.length; i++)
+        tabElements[i].setAttribute('hidden', 'true');
+}

@@ -285,6 +285,12 @@ function addNewAdminButtonClicked() {
         return;
     }
 
+    loadAdminList();
+    if (adminList.includes(toAdd)) {
+        snackbar('This email address is already an admin');
+        return;
+    }
+
     // adds admin
     adminList.push(toAdd);
     firestore.doc('users/permissions').update({

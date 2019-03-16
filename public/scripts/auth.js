@@ -149,6 +149,8 @@ function initFirebaseAuth() {
 function authStateObserver(user) {
     // loads list of admins no matter what
     loadAdminList();
+    // hide all tabs and buttons
+    hideAllTabButtonsAndTabs();
 
     if (user) { // User is signed in!
         var userEmail = getUserEmail();
@@ -183,53 +185,22 @@ function authStateObserver(user) {
                 loadOpenTournamentRegistrations();
                 // Show register tab
                 tournamentRegistrationTabButtonClicked();
-            } else {
-                // display email verification screen
             }
-
-            // Show tab navigation bar
-            pageTabElement.removeAttribute('hidden');
-
-            // Hide email verification screen
-            emailVerificationScreenElement.setAttribute('hidden', 'true');
         } else {
-            // Show email verification screen
-            emailVerificationScreenElement.removeAttribute('hidden');
-
-            // Hide all tab navigation buttons
-            for (var i = 0; i < tabButtonElements.length; i++)
-                tabButtonElements[i].setAttribute('hidden', 'true');
-
-            // Hide tab navigation bar
-            pageTabElement.setAttribute('hidden', 'true');
-
-            // Hide all other screens
-            for (var i = 0; i < tabElements.length; i++)
-                tabElements[i].setAttribute('hidden', 'true');
+            // show email verification screen
+            emailVerificationTabButtonElement.removeAttribute('hidden');
+            // focus on email verification tab
+            emailVerificationTabButtonClicked();
         }
-
-        // Hide login screen
-        loginScreenElement.setAttribute('hidden', 'true');
     } else { // User is signed out!
         // Hide user's profile and sign-out button.
         userEmailElement.setAttribute('hidden', 'true');
         signOutButtonElement.setAttribute('hidden', 'true');
 
-        // Hide all tab navigation buttons
-        for (var i = 0; i < tabButtonElements.length; i++)
-            tabButtonElements[i].setAttribute('hidden', 'true');
-
-        // Hide tab navigation bar
-        pageTabElement.setAttribute('hidden', 'true');
-
-        // Hide all other screens
-        for (var i = 0; i < tabElements.length; i++)
-            tabElements[i].setAttribute('hidden', 'true');
-        
-        // Hide email verification screen
-        emailVerificationScreenElement.setAttribute('hidden', 'true');
-
-        // Show login screen
-        loginScreenElement.removeAttribute('hidden');
+        // show signed out tab navigation buttons
+        for (var i = 0; i < signedOutTabButtonElements.length; i++)
+            signedOutTabButtonElements[i].removeAttribute('hidden');
+        // focus on the login tab
+        loginTabButtonClicked();
     }
 }
