@@ -98,6 +98,7 @@ var tournamentDateElement = document.getElementById('tournamentDate');
 var tournamentSignUpDueDateElement = document.getElementById('tournamentSignUpDueDate');
 var tournamentFeesElement = document.getElementById('tournamentFees');
 var tournamentContactElement = document.getElementById('tournamentContact');
+var createTournamentConfirmationElement = document.getElementById('createTournamentConfirmation');
 
 // Manage tournaments elements
 var tournamentElements = [];

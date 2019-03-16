@@ -35,6 +35,9 @@ function loadAthleteInformation() {
 
 // Loads all open tournaments to the registration page
 function loadOpenTournamentRegistrations() {
+    // remove previously loaded information
+    removeAllChildren(tournamentRegistrationTabElement);
+    // add tournament registration forms
     firestore.collection('tournaments').get().then(function(querySnapshot) {
         // variable that stores whether there are tournaments open for registration
         var openTournamentExists = false;
@@ -94,6 +97,8 @@ function loadTournamentRegistrationElements() {
 
 // Loads all open tournaments to the registration page
 function loadManageTournamentsPage() {
+    // remove previously loaded information
+    removeAllChildren(manageTournamentsTabElement);
     // clear tournament elements
     tournamentElements = [];
     // individually create each tournament element
@@ -116,6 +121,9 @@ function loadManageTournamentsPage() {
 
 // Loads the view athletes page
 function loadViewAthletesPage() {
+    // remove previously loaded information
+    removeAllChildren(viewAthletesTabElement);
+    // reload elements
     viewAthletesTabElement.appendChild(createViewAthleteInformationElement());
     viewAthletesTabElement.appendChild(createViewEquipmentSizesElement());
     viewAthletesTabElement.appendChild(createCopyrightElement());

@@ -158,11 +158,13 @@ function createTournamentButtonClicked() {
     var tournamentSignUpDueDate = tournamentSignUpDueDateElement.value;
     var tournamentFees = tournamentFeesElement.value;
     var tournamentContact = tournamentContactElement.value;
+    var confirmation = createTournamentConfirmationElement.checked;
 
     // check for missing required fields
     if (tournamentName == "" ||
         tournamentDate == "" ||
-        tournamentContact == "") {
+        tournamentContact == "" ||
+        !confirmation) {
         snackbar('Please fill out all required fields');
         return;
     }
