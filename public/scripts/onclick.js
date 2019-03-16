@@ -285,6 +285,7 @@ function addNewAdminButtonClicked() {
         return;
     }
 
+    // prevents double adding the same admin email address
     loadAdminList();
     if (adminList.includes(toAdd)) {
         snackbar('This email address is already an admin');
