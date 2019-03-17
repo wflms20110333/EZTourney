@@ -115,7 +115,7 @@ function sendVerificationEmail() {
         snackbar('Verification email successfully sent!');
     }).catch(function(error) {
         // An error happened.
-        snackbar('Failed to send verification email.');
+        snackbar(error.message);
     });
 }
 
