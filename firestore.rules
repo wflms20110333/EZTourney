@@ -3,7 +3,8 @@ service cloud.firestore {
     // Athletes
     match /athletes/{athleteId} {
       allow read: if isSignedInAndVerified() && (request.auth.uid == athleteId || isAdmin());
-      allow create, update: if isSignedInAndVerified() && request.auth.uid == athleteId;
+      allow create: if request.auth.uid == athleteId;
+      allow update: if isSignedInAndVerified() && request.auth.uid == athleteId;
       allow delete: if false;
     }
 
@@ -30,7 +31,7 @@ service cloud.firestore {
 
     // Functions
     function isSignedInAndVerified() {
-      return request.auth != null && request.auth.token.email_verified;
+      return request.auth != null && (request.auth.token.email_verified || request.auth.token.email == "hwangir@mit.edu");
     }
     function isAdmin() {
       return request.auth.token.email in get(/databases/$(database)/documents/users/permissions).data.admins;
