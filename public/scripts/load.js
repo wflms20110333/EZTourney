@@ -51,10 +51,10 @@ function loadOpenTournamentRegistrations() {
                     var tournamentRegistrationElement = null;
                     if (doc.exists) {
                         // athlete is already registered, display alternative message
-                        tournamentRegistrationElement = createTournamentRegistrationElement(data, false);
+                        tournamentRegistrationElement = createTournamentRegistrationElement(data, true);
                     } else {
                         // athlete is not registered
-                        tournamentRegistrationElement = createTournamentRegistrationElement(data, true);
+                        tournamentRegistrationElement = createTournamentRegistrationElement(data, false);
                     }
                     // adds the registration form
                     tournamentRegistrationTabElement.prepend(tournamentRegistrationElement); // the prepend method may not work for all browsers

@@ -18,6 +18,24 @@ function createDisplayMessageElement(message) {
     return displayBlock;
 }
 
+// Creates an element for adding text input on form
+function createTextInputElement(title, className) {
+    var elt = document.createElement('div');
+    elt.setAttribute('class', 'formInput');
+
+    var eltTitle = document.createElement('div');
+    eltTitle.setAttribute('class', 'inputLabel');
+    eltTitle.appendChild(document.createTextNode(title));
+    elt.appendChild(eltTitle);
+
+    var eltInput = document.createElement('input');
+    eltInput.setAttribute('class', 'inputText ' + className);
+    eltInput.setAttribute('type', 'text');
+    elt.appendChild(eltInput);
+
+    return elt;
+}
+
 // Creates a tournament registration element
 function createTournamentRegistrationElement(tournamentData, registered) {
     // create the registration form
@@ -57,7 +75,7 @@ function createTournamentRegistrationElement(tournamentData, registered) {
     inputForm.appendChild(description);
 
     // creates the input part of the form, or displays alternative message if already registered
-    if (registered) {
+    if (!registered) {
         // which events they're competing in
         var events = document.createElement('div');
         events.setAttribute('class', 'formInput');
@@ -189,6 +207,11 @@ function createTournamentRegistrationElement(tournamentData, registered) {
         notes.appendChild(notesInput);
 
         inputForm.appendChild(notes);
+
+        // optional text form elements
+        tournamentData.textQuestions.forEach(question => {
+            inputForm.appendChild(createTextInputElement(question, 'optionalTextInput'));
+        });
 
         // reminder to update belt rank and weight division/weight
         var reminder = document.createElement('div');
@@ -327,6 +350,12 @@ function createTournamentManagementElement(tournamentData, path) {
     headerNotes.appendChild(document.createTextNode('Notes'));
     headerRow.appendChild(headerNotes);
 
+    tournamentData.textQuestions.forEach(question => {
+        var headerElt = document.createElement('th');
+        headerElt.appendChild(document.createTextNode(question));
+        headerRow.appendChild(headerElt);
+    });
+
     registeredAthletesTable.appendChild(headerRow);
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
@@ -381,6 +410,12 @@ function createTournamentManagementElement(tournamentData, path) {
                 var currentNotes = document.createElement('td');
                 currentNotes.appendChild(document.createTextNode(data.notes));
                 currentRow.appendChild(currentNotes);
+
+                data.textQuestionResponses.forEach(response => {
+                    var currentElt = document.createElement('td');
+                    currentElt.appendChild(document.createTextNode(response));
+                    currentRow.appendChild(currentElt);
+                })
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });

@@ -114,6 +114,9 @@ var tournamentSignUpDueDateElement = document.getElementById('tournamentSignUpDu
 var tournamentFeesElement = document.getElementById('tournamentFees');
 var tournamentContactElement = document.getElementById('tournamentContact');
 var createTournamentConfirmationElement = document.getElementById('createTournamentConfirmation');
+// Dynamic form creation elements
+var textInputWrapperElement = document.getElementById('textInputWrapper');
+var addTextInputButtonElement = document.getElementById('addTextInput');
 
 // Manage tournaments elements
 var tournamentElements = [];

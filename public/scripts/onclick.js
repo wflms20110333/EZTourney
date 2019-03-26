@@ -71,6 +71,11 @@ function registerForTournamentButtonClicked() {
             return;
         }
     }
+
+    var textQuestionResponses = [];
+    var textResponses = document.getElementsByClassName('optionalTextInput');
+    for (var i = 0; i < textResponses.length; i++)
+        textQuestionResponses.push(textResponses[i].value);
     
     // submit data
     var tournamentsRef = firestore.collection("tournaments");
@@ -86,7 +91,8 @@ function registerForTournamentButtonClicked() {
         equipmentBuddyGloves: equipmentBuddyGloves,
         equipmentBuddyFeetProtectors: equipmentBuddyFeetProtectors,
         equipmentBuddyESocks: equipmentBuddyESocks,
-        notes: notes
+        notes: notes,
+        textQuestionResponses: textQuestionResponses
     }).then(function() {
         snackbar('Successfully registered for tournament!');
     }).catch(function(error) {
@@ -169,6 +175,11 @@ function updateEquipmentSizesButtonClicked() {
     });
 }
 
+// Adds an optional text input form element
+function addTextInputButtonClicked() {
+    textInputWrapperElement.insertBefore(createTextInputElement('Optional Question (Text Response)', 'optionalText'), addTextInputButtonElement);
+}
+
 // Creates a tournament
 function createTournamentButtonClicked() {
     // retrieve values
@@ -195,12 +206,20 @@ function createTournamentButtonClicked() {
         return;
     }
 
+    var textQuestions = [];
+    var questionsElements = document.getElementsByClassName('optionalText');
+    for (var i = 0; i < questionsElements.length; i++) {
+        var question = questionsElements[i].value;
+        if (question != "")
+            textQuestions.push(question);
+    }
+
     // submit data
-    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, tournamentContact);
+    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, tournamentContact, textQuestions);
 }
 
 // Adds a tournament to the database
-function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact) {
+function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions) {
     // create tournament's document name
     name = name.trim();
     var tournamentDocName = date + "_" + concatenateString(name.split(/\s+/));
@@ -217,7 +236,8 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         date: date,
         signUpDueDate: signUpDueDate,
         fees: fees,
-        contact: contact
+        contact: contact,
+        textQuestions: textQuestions
     }).then(function() {
         snackbar("Tournament successfully created and open for registration!");
     }).catch(function(error) {
