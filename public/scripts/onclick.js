@@ -91,6 +91,11 @@ function registerForTournamentButtonClicked() {
         }
         checkboxQuestionResponses.push(str);
     }
+
+    var selectQuestionResponses = [];
+    var selectResponses = document.getElementsByClassName('optionalSelectInput');
+    for (var i = 0; i < selectResponses.length; i++)
+        selectQuestionResponses.push(selectResponses[i].children[1].value);
     
     // submit data
     var tournamentsRef = firestore.collection("tournaments");
@@ -108,9 +113,11 @@ function registerForTournamentButtonClicked() {
         equipmentBuddyESocks: equipmentBuddyESocks,
         notes: notes,
         textQuestionResponses: textQuestionResponses,
-        checkboxQuestionResponses: checkboxQuestionResponses
+        checkboxQuestionResponses: checkboxQuestionResponses,
+        selectQuestionResponses: selectQuestionResponses
     }).then(function() {
         snackbar('Successfully registered for tournament!');
+        setTimeout(function(){ location.reload(); }, 3000);
     }).catch(function(error) {
         console.error("Error writing new athlete's registration information to Firebase Database", error);
     });
@@ -203,8 +210,21 @@ function addCheckboxInputButtonClicked() {
         snackbar('Number of checkboxes must be positive');
         return;
     }
-    checkboxInputWrapperElement.insertBefore(createCheckboxInputCreationElement(numCheckboxes), numCheckboxesLabelElement);
+    checkboxInputWrapperElement.insertBefore(createMultipleChoiceInputCreationElement(numCheckboxes, 
+        'checkboxCreation', 'Optional Question (Checkboxes)'), numCheckboxesLabelElement);
     numCheckboxesElement.value = '';
+}
+
+// Adds an optional checkbox input creation form element
+function addSelectInputButtonClicked() {
+    var numSelects = numSelectsElement.value;
+    if (numSelects < 1) {
+        snackbar('Number of choices must be positive');
+        return;
+    }
+    selectInputWrapperElement.insertBefore(createMultipleChoiceInputCreationElement(numSelects, 
+        'selectCreation', 'Optional Question (Multiple Choice)'), numSelectsLabelElement);
+    numSelectsElement.value = '';
 }
 
 // Creates a tournament
@@ -253,13 +273,26 @@ function createTournamentButtonClicked() {
         checkboxQuestions.push(children[0].children[1].value);
     }
 
+    var selectQuestions = [];
+    var selectChoices = new Map();
+    questionsElements = document.getElementsByClassName('selectCreation');
+    for (var i = 0; i < questionsElements.length; i++) {
+        var children = questionsElements[i].children;
+        var arr = [];
+        for (var j = 1; j < children.length; j++)
+            arr.push(children[j].children[1].value);
+        selectChoices.set(children[0].children[1].value, arr);
+        selectQuestions.push(children[0].children[1].value);
+    }
+
     // submit data
-    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, 
-        tournamentFees, tournamentContact, textQuestions, checkboxQuestions, checkboxChoices);
+    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, 
+        tournamentContact, textQuestions, checkboxQuestions, checkboxChoices, selectQuestions, selectChoices);
 }
 
 // Adds a tournament to the database
-function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions, checkboxQuestions, checkboxChoices) {
+function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions, 
+    checkboxQuestions, checkboxChoices, selectQuestions, selectChoices) {
     // create tournament's document name
     name = name.trim();
     var tournamentDocName = date + "_" + concatenateString(name.split(/\s+/));
@@ -278,11 +311,12 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         fees: fees,
         contact: contact,
         textQuestions: textQuestions,
-        checkboxQuestions: checkboxQuestions
+        checkboxQuestions: checkboxQuestions,
+        selectQuestions: selectQuestions
     }).then(function() {
         var success = true;
         var keyIt = checkboxChoices.keys();
-        let key = keyIt.next();
+        var key = keyIt.next();
         while (!key.done) {
             tournamentsRef.doc(tournamentDocName).collection('checkboxQuestions').doc(concatenateString(key.value.split(" "))).set({
                 question: key.value,
@@ -293,14 +327,26 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
             });
             key = keyIt.next();
         }
-        if (success)
+        keyIt = selectChoices.keys();
+        key = keyIt.next();
+        while (!key.done) {
+            tournamentsRef.doc(tournamentDocName).collection('selectQuestions').doc(concatenateString(key.value.split(" "))).set({
+                question: key.value,
+                choices: selectChoices.get(key.value)
+            }).catch(function(error) {
+                success = false;
+                console.error("Error writing new tournament's information to Firebase Database", error);
+            });
+            key = keyIt.next();
+        }
+        // this actually probably doesn't work -- the database queries are slow and a separate thread
+        if (success) {
             snackbar("Tournament successfully created and open for registration!");
+            setTimeout(function(){ location.reload(); }, 3000);
+        }
     }).catch(function(error) {
         console.error("Error writing new tournament's information to Firebase Database", error);
     });;
-
-    // add sparring teams collection? or do when sparring teams are generated
-    // tournamentsRef.doc(tournamentDocName).collection("women'sA").doc("A1").set({light: "EZ"});
 }
 
 // Closes the tournament currently open (there should be at most one)

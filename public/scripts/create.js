@@ -37,11 +37,11 @@ function createTextInputElement(title, className) {
 }
 
 // Creates an element for adding checkbox input on form
-function createCheckboxInputCreationElement(numChoices) {
+function createMultipleChoiceInputCreationElement(numChoices, className, text) {
     var elt = document.createElement('div');
-    elt.setAttribute('class', 'formInput checkboxCreation');
+    elt.setAttribute('class', 'formInput ' + className);
 
-    elt.appendChild(createTextInputElement('Optional Question (Checkbox Response)', ''));
+    elt.appendChild(createTextInputElement(text, ''));
     for (var i = 1; i <= numChoices; i++) 
         elt.appendChild(createTextInputElement('Choice ' + i, ''));
 
@@ -66,6 +66,36 @@ function createCheckboxInputElement(question, arr, className) {
         elt.appendChild(document.createTextNode(' ' + arr[i]));
         elt.appendChild(document.createElement('br'));
     }
+
+    return elt;
+}
+
+// Creates an element for select input
+function createSelectInputElement(question, arr, className) {
+    var elt = document.createElement('div');
+    elt.setAttribute('class', 'formInput ' + className);
+
+    var eltTitle = document.createElement('div');
+    eltTitle.setAttribute('class', 'inputLabel');
+    eltTitle.appendChild(document.createTextNode(question));
+    elt.appendChild(eltTitle);
+
+    var dropdown = document.createElement('select');
+
+    var optionSelect = document.createElement('option');
+    optionSelect.setAttribute('selected', 'true');
+    optionSelect.setAttribute('value', '');
+    optionSelect.appendChild(document.createTextNode(' -- select an option -- '));
+    dropdown.appendChild(optionSelect);
+
+    for (var i = 0; i < arr.length; i++) {
+        var option = document.createElement('option');
+        option.setAttribute('value', arr[i]);
+        option.appendChild(document.createTextNode(arr[i]));
+        dropdown.appendChild(option);
+    }
+
+    elt.appendChild(dropdown);
 
     return elt;
 }
@@ -274,11 +304,15 @@ function createTournamentRegistrationElement(tournamentData, registered, tournam
 
         // optional checkbox form elements
         tournamentData.checkboxQuestions.forEach(question => {
-            console.log('question: ' + question);
-            console.log(tournamentDocPath + '/checkboxQuestions/' + concatenateString(question.split(" ")));
             firestore.doc(tournamentDocPath + '/checkboxQuestions/' + concatenateString(question.split(" "))).get().then(function(doc) {
-                console.log(doc);
                 inputForm.insertBefore(createCheckboxInputElement(question, doc.data().choices, 'optionalCheckboxInput'), reminder);
+            });
+        });
+
+        // optional select form elements
+        tournamentData.selectQuestions.forEach(question => {
+            firestore.doc(tournamentDocPath + '/selectQuestions/' + concatenateString(question.split(" "))).get().then(function(doc) {
+                inputForm.insertBefore(createSelectInputElement(question, doc.data().choices, 'optionalSelectInput'), reminder);
             });
         });
     } else {
@@ -406,6 +440,12 @@ function createTournamentManagementElement(tournamentData, path) {
         headerRow.appendChild(headerElt);
     });
 
+    tournamentData.selectQuestions.forEach(question => {
+        var headerElt = document.createElement('th');
+        headerElt.appendChild(document.createTextNode(question));
+        headerRow.appendChild(headerElt);
+    });
+
     registeredAthletesTable.appendChild(headerRow);
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
@@ -468,6 +508,12 @@ function createTournamentManagementElement(tournamentData, path) {
                 })
 
                 data.checkboxQuestionResponses.forEach(response => {
+                    var currentElt = document.createElement('td');
+                    currentElt.appendChild(document.createTextNode(response));
+                    currentRow.appendChild(currentElt);
+                })
+
+                data.selectQuestionResponses.forEach(response => {
                     var currentElt = document.createElement('td');
                     currentElt.appendChild(document.createTextNode(response));
                     currentRow.appendChild(currentElt);

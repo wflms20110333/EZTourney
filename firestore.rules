@@ -26,6 +26,12 @@ service cloud.firestore {
         allow read: if isSignedInAndVerified();
         allow create, update: if isSignedInAndVerified() && isAdmin();
       }
+
+      // Select Questions
+      match /selectQuestions/{question} {
+        allow read: if isSignedInAndVerified();
+        allow create, update: if isSignedInAndVerified() && isAdmin();
+      }
     }
 
     // Users

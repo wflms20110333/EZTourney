@@ -121,6 +121,10 @@ var checkboxInputWrapperElement = document.getElementById('checkboxInputWrapper'
 var numCheckboxesLabelElement = document.getElementById('numCheckboxesLabel');
 var numCheckboxesElement = document.getElementById('numCheckboxes');
 var addCheckboxInputButtonElement = document.getElementById('addCheckboxInput');
+var selectInputWrapperElement = document.getElementById('selectInputWrapper');
+var numSelectsLabelElement = document.getElementById('numSelectsLabel');
+var numSelectsElement = document.getElementById('numSelects');
+var addSelectInputButtonElement = document.getElementById('addSelectInput');
 
 // Manage tournaments elements
 var tournamentElements = [];
