@@ -117,6 +117,10 @@ var createTournamentConfirmationElement = document.getElementById('createTournam
 // Dynamic form creation elements
 var textInputWrapperElement = document.getElementById('textInputWrapper');
 var addTextInputButtonElement = document.getElementById('addTextInput');
+var checkboxInputWrapperElement = document.getElementById('checkboxInputWrapper');
+var numCheckboxesLabelElement = document.getElementById('numCheckboxesLabel');
+var numCheckboxesElement = document.getElementById('numCheckboxes');
+var addCheckboxInputButtonElement = document.getElementById('addCheckboxInput');
 
 // Manage tournaments elements
 var tournamentElements = [];

@@ -26,6 +26,7 @@ registerButtonElement.addEventListener('click', register);
 updateAthleteInformationButtonElement.addEventListener('click', updateInformationButtonClicked);
 updateEquipmentSizesButtonElement.addEventListener('click', updateEquipmentSizesButtonClicked);
 addTextInputButtonElement.addEventListener('click', addTextInputButtonClicked);
+addCheckboxInputButtonElement.addEventListener('click', addCheckboxInputButtonClicked);
 createTournamentButtonElement.addEventListener('click', createTournamentButtonClicked);
 removeAdminButtonElement.addEventListener('click', removeAdminButtonClicked);
 addNewAdminButtonElement.addEventListener('click', addNewAdminButtonClicked);

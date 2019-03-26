@@ -36,8 +36,42 @@ function createTextInputElement(title, className) {
     return elt;
 }
 
+// Creates an element for adding checkbox input on form
+function createCheckboxInputCreationElement(numChoices) {
+    var elt = document.createElement('div');
+    elt.setAttribute('class', 'formInput checkboxCreation');
+
+    elt.appendChild(createTextInputElement('Optional Question (Checkbox Response)', ''));
+    for (var i = 1; i <= numChoices; i++) 
+        elt.appendChild(createTextInputElement('Choice ' + i, ''));
+
+    return elt;
+}
+
+// Creates an element for checkbox input
+function createCheckboxInputElement(question, arr, className) {
+    var elt = document.createElement('div');
+    elt.setAttribute('class', 'formInput ' + className);
+
+    var eltTitle = document.createElement('div');
+    eltTitle.setAttribute('class', 'inputLabel');
+    eltTitle.appendChild(document.createTextNode(question));
+    elt.appendChild(eltTitle);
+
+    for (var i = 0; i < arr.length; i++) {
+        var checkbox = document.createElement('input');
+        checkbox.setAttribute('name', arr[i]);
+        checkbox.setAttribute('type', 'checkbox');
+        elt.appendChild(checkbox);
+        elt.appendChild(document.createTextNode(' ' + arr[i]));
+        elt.appendChild(document.createElement('br'));
+    }
+
+    return elt;
+}
+
 // Creates a tournament registration element
-function createTournamentRegistrationElement(tournamentData, registered) {
+function createTournamentRegistrationElement(tournamentData, registered, tournamentDocPath) {
     // create the registration form
     var inputForm = document.createElement('div');
     inputForm.setAttribute('class', 'inputForm');
@@ -237,6 +271,16 @@ function createTournamentRegistrationElement(tournamentData, registered) {
         submitButton.setAttribute('id', 'registerForTournament');
         submitButton.appendChild(document.createTextNode('Register for Tournament!'));
         inputForm.appendChild(submitButton);
+
+        // optional checkbox form elements
+        tournamentData.checkboxQuestions.forEach(question => {
+            console.log('question: ' + question);
+            console.log(tournamentDocPath + '/checkboxQuestions/' + concatenateString(question.split(" ")));
+            firestore.doc(tournamentDocPath + '/checkboxQuestions/' + concatenateString(question.split(" "))).get().then(function(doc) {
+                console.log(doc);
+                inputForm.insertBefore(createCheckboxInputElement(question, doc.data().choices, 'optionalCheckboxInput'), reminder);
+            });
+        });
     } else {
         var alreadyRegistered = document.createElement('div');
         alreadyRegistered.appendChild(document.createTextNode('You have already registered for this tournament! Contact the organizer to make changes to your registration.'));
@@ -356,6 +400,12 @@ function createTournamentManagementElement(tournamentData, path) {
         headerRow.appendChild(headerElt);
     });
 
+    tournamentData.checkboxQuestions.forEach(question => {
+        var headerElt = document.createElement('th');
+        headerElt.appendChild(document.createTextNode(question));
+        headerRow.appendChild(headerElt);
+    });
+
     registeredAthletesTable.appendChild(headerRow);
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
@@ -412,6 +462,12 @@ function createTournamentManagementElement(tournamentData, path) {
                 currentRow.appendChild(currentNotes);
 
                 data.textQuestionResponses.forEach(response => {
+                    var currentElt = document.createElement('td');
+                    currentElt.appendChild(document.createTextNode(response));
+                    currentRow.appendChild(currentElt);
+                })
+
+                data.checkboxQuestionResponses.forEach(response => {
                     var currentElt = document.createElement('td');
                     currentElt.appendChild(document.createTextNode(response));
                     currentRow.appendChild(currentElt);

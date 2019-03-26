@@ -76,6 +76,21 @@ function registerForTournamentButtonClicked() {
     var textResponses = document.getElementsByClassName('optionalTextInput');
     for (var i = 0; i < textResponses.length; i++)
         textQuestionResponses.push(textResponses[i].value);
+
+    var checkboxQuestionResponses = [];
+    var checkboxResponses = document.getElementsByClassName('optionalCheckboxInput');
+    for (var i = 0; i < checkboxResponses.length; i++) {
+        var str = '';
+        var children = checkboxResponses[i].children;
+        for (var j = 0; j < children.length; j++) {
+            if (children[j].type != 'checkbox' || !children[j].checked)
+                continue;
+            if (str.length > 0)
+                str += ', ';
+            str += children[j].name;
+        }
+        checkboxQuestionResponses.push(str);
+    }
     
     // submit data
     var tournamentsRef = firestore.collection("tournaments");
@@ -92,7 +107,8 @@ function registerForTournamentButtonClicked() {
         equipmentBuddyFeetProtectors: equipmentBuddyFeetProtectors,
         equipmentBuddyESocks: equipmentBuddyESocks,
         notes: notes,
-        textQuestionResponses: textQuestionResponses
+        textQuestionResponses: textQuestionResponses,
+        checkboxQuestionResponses: checkboxQuestionResponses
     }).then(function() {
         snackbar('Successfully registered for tournament!');
     }).catch(function(error) {
@@ -175,9 +191,20 @@ function updateEquipmentSizesButtonClicked() {
     });
 }
 
-// Adds an optional text input form element
+// Adds an optional text input creation form element
 function addTextInputButtonClicked() {
     textInputWrapperElement.insertBefore(createTextInputElement('Optional Question (Text Response)', 'optionalText'), addTextInputButtonElement);
+}
+
+// Adds an optional checkbox input creation form element
+function addCheckboxInputButtonClicked() {
+    var numCheckboxes = numCheckboxesElement.value;
+    if (numCheckboxes < 1) {
+        snackbar('Number of checkboxes must be positive');
+        return;
+    }
+    checkboxInputWrapperElement.insertBefore(createCheckboxInputCreationElement(numCheckboxes), numCheckboxesLabelElement);
+    numCheckboxesElement.value = '';
 }
 
 // Creates a tournament
@@ -214,19 +241,32 @@ function createTournamentButtonClicked() {
             textQuestions.push(question);
     }
 
+    var checkboxQuestions = [];
+    var checkboxChoices = new Map();
+    questionsElements = document.getElementsByClassName('checkboxCreation');
+    for (var i = 0; i < questionsElements.length; i++) {
+        var children = questionsElements[i].children;
+        var arr = [];
+        for (var j = 1; j < children.length; j++)
+            arr.push(children[j].children[1].value);
+        checkboxChoices.set(children[0].children[1].value, arr);
+        checkboxQuestions.push(children[0].children[1].value);
+    }
+
     // submit data
-    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, tournamentContact, textQuestions);
+    addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, 
+        tournamentFees, tournamentContact, textQuestions, checkboxQuestions, checkboxChoices);
 }
 
 // Adds a tournament to the database
-function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions) {
+function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions, checkboxQuestions, checkboxChoices) {
     // create tournament's document name
     name = name.trim();
     var tournamentDocName = date + "_" + concatenateString(name.split(/\s+/));
 
     // get tournaments collection reference
     var tournamentsRef = firestore.collection('tournaments');
-
+    
     // add new tournament document to collection
     tournamentsRef.doc(tournamentDocName).set({
         documentID: tournamentDocName,
@@ -237,9 +277,24 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         signUpDueDate: signUpDueDate,
         fees: fees,
         contact: contact,
-        textQuestions: textQuestions
+        textQuestions: textQuestions,
+        checkboxQuestions: checkboxQuestions
     }).then(function() {
-        snackbar("Tournament successfully created and open for registration!");
+        var success = true;
+        var keyIt = checkboxChoices.keys();
+        let key = keyIt.next();
+        while (!key.done) {
+            tournamentsRef.doc(tournamentDocName).collection('checkboxQuestions').doc(concatenateString(key.value.split(" "))).set({
+                question: key.value,
+                choices: checkboxChoices.get(key.value)
+            }).catch(function(error) {
+                success = false;
+                console.error("Error writing new tournament's information to Firebase Database", error);
+            });
+            key = keyIt.next();
+        }
+        if (success)
+            snackbar("Tournament successfully created and open for registration!");
     }).catch(function(error) {
         console.error("Error writing new tournament's information to Firebase Database", error);
     });;
