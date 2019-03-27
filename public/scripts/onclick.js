@@ -64,7 +64,7 @@ function registerForTournamentButtonClicked() {
             equipmentBuddyHelmet && helmetSizeElement.value == 0 ||
             equipmentBuddyArmGuards && armGuardsSizeElement.value == 0 ||
             equipmentBuddyShinGuards && shinGuardsSizeElement.value == 0 ||
-            equipmentBuddyGloves && glovesSizeElement.value ||
+            equipmentBuddyGloves && glovesSizeElement.value == 0 ||
             equipmentBuddyFeetProtectors && socksSizeElement.value == 0 ||
             equipmentBuddyESocks && socksSizeElement.value == 0) {
             snackbar("Please fill out sizes for checked equipment on the 'Equipment Sizes' tab");
