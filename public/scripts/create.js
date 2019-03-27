@@ -100,6 +100,25 @@ function createSelectInputElement(question, arr, className) {
     return elt;
 }
 
+// Creates a row in a table given the data
+function createTableRow(header, arr) {
+    var cellType = header ? 'th' : 'td';
+    var row = document.createElement('tr');
+    for (var i = 0; i < arr.length; i++) {
+        var cell = document.createElement(cellType);
+        cell.appendChild(document.createTextNode(arr[i]));
+        row.appendChild(cell);
+    }
+    return row;
+}
+
+// Creates an element that displays text, such as an h1
+function createTextElement(type, text) {
+    var elt = document.createElement(type);
+    elt.appendChild(document.createTextNode(text));
+    return elt;
+}
+
 // Creates a tournament registration element
 function createTournamentRegistrationElement(tournamentData, registered, tournamentDocPath) {
     // create the registration form
@@ -331,9 +350,7 @@ function createTournamentManagementElement(tournamentData, path) {
     tournamentBlock.setAttribute('class', 'inputForm inputFormLarge');
     
     // create title element
-    var title = document.createElement('h1');
-    title.appendChild(document.createTextNode(tournamentData.name));
-    tournamentBlock.appendChild(title);
+    tournamentBlock.appendChild(createTextElement('h1', tournamentData.name));
 
     // create message element
     if (tournamentData.message != "") {
@@ -377,76 +394,27 @@ function createTournamentManagementElement(tournamentData, path) {
         tournamentBlock.appendChild(lineBreak);
     }
 
-    /*
-    // create show/hide registered athletes button
-    var submitButton = document.createElement('a');
-    submitButton.setAttribute('class', 'button');
-    submitButton.setAttribute('target', '_blank');
-    // submitButton.setAttribute('id', 'registerForTournament');
-    submitButton.appendChild(document.createTextNode('Show registered athletes')); // add onclick to toggle table display?
-    tournamentBlock.appendChild(submitButton);
-    */
-
-    var registeredAthletesTitle = document.createElement('h2');
-    registeredAthletesTitle.appendChild(document.createTextNode('Registered Athletes'));
-    tournamentBlock.appendChild(registeredAthletesTitle);
-
     // create registered athletes table
+    tournamentBlock.appendChild(createTextElement('h2', 'Registered Athletes'));
     var registeredAthletesTable = document.createElement('table');
+    var headerData = ['Name', 'Events', 'Year', 'Gender', 'Belt', 'Weight Division', 'Weight', 'Notes'];
+    tournamentData.textQuestions.forEach(question => { headerData.push(question); });
+    tournamentData.checkboxQuestions.forEach(question => { headerData.push(question); });
+    tournamentData.selectQuestions.forEach(question => { headerData.push(question); });
+    registeredAthletesTable.appendChild(createTableRow(true, headerData));
+    tournamentBlock.appendChild(registeredAthletesTable);
 
-    var headerRow = document.createElement('tr');
+    // equipment buddy lists
+    tournamentBlock.appendChild(createTextElement('h2', 'Need Equipment Buddy'));
+    var needEquipmentBuddyTable = document.createElement('table');
+    headerData = ['Name', 'Hogu', 'Helmet', 'Arm Guards', 'Shin Guards', 'Gloves', 'Feet Protectors', 'Daedo E-Socks'];
+    needEquipmentBuddyTable.appendChild(createTableRow(true, headerData));
+    tournamentBlock.appendChild(needEquipmentBuddyTable);
 
-    var headerName = document.createElement('th');
-    headerName.appendChild(document.createTextNode('Name'));
-    headerRow.appendChild(headerName);
-
-    var headerEvents = document.createElement('th');
-    headerEvents.appendChild(document.createTextNode('Events'));
-    headerRow.appendChild(headerEvents);
-
-    var headerYear = document.createElement('th');
-    headerYear.appendChild(document.createTextNode('Year'));
-    headerRow.appendChild(headerYear);
-
-    var headerGender = document.createElement('th');
-    headerGender.appendChild(document.createTextNode('Gender'));
-    headerRow.appendChild(headerGender);
-
-    var headerBelt = document.createElement('th');
-    headerBelt.appendChild(document.createTextNode('Belt'));
-    headerRow.appendChild(headerBelt);
-
-    var headerWeightDivision = document.createElement('th');
-    headerWeightDivision.appendChild(document.createTextNode('Weight Division'));
-    headerRow.appendChild(headerWeightDivision);
-
-    var headerWeight = document.createElement('th');
-    headerWeight.appendChild(document.createTextNode('Weight'));
-    headerRow.appendChild(headerWeight);
-
-    var headerNotes = document.createElement('th');
-    headerNotes.appendChild(document.createTextNode('Notes'));
-    headerRow.appendChild(headerNotes);
-
-    tournamentData.textQuestions.forEach(question => {
-        var headerElt = document.createElement('th');
-        headerElt.appendChild(document.createTextNode(question));
-        headerRow.appendChild(headerElt);
-    });
-
-    tournamentData.checkboxQuestions.forEach(question => {
-        var headerElt = document.createElement('th');
-        headerElt.appendChild(document.createTextNode(question));
-        headerRow.appendChild(headerElt);
-    });
-
-    tournamentData.selectQuestions.forEach(question => {
-        var headerElt = document.createElement('th');
-        headerElt.appendChild(document.createTextNode(question));
-        headerRow.appendChild(headerElt);
-    });
-
-    registeredAthletesTable.appendChild(headerRow);
+    tournamentBlock.appendChild(createTextElement('h2', 'Can Be Equipment Buddy'));
+    var canBeEquipmentBuddyTable = document.createElement('table');
+    canBeEquipmentBuddyTable.appendChild(createTableRow(true, headerData));
+    tournamentBlock.appendChild(canBeEquipmentBuddyTable);
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
@@ -462,71 +430,34 @@ function createTournamentManagementElement(tournamentData, path) {
             else
                 events = "sparring";
 
-            var currentRow = document.createElement('tr');
-
             // adds information of athlete
             firestore.doc('/athletes/' + doc.id).get().then(function(doc) {
                 // retrieve the document's data
                 var athleteData = doc.data();
+                var rowData = [athleteData.name, events, athleteData.year, athleteData.gender, athleteData.belt, 
+                    athleteData.weightDivision, athleteData.weight, data.notes];
+                data.textQuestionResponses.forEach(response => { rowData.push(response); });
+                data.checkboxQuestionResponses.forEach(response => { rowData.push(response); });
+                data.selectQuestionResponses.forEach(response => { rowData.push(response); });
+                registeredAthletesTable.appendChild(createTableRow(false, rowData));
 
-                var currentName = document.createElement('td');
-                currentName.appendChild(document.createTextNode(athleteData.name));
-                currentRow.appendChild(currentName);
-
-                var currentEvents = document.createElement('td');
-                currentEvents.appendChild(document.createTextNode(events));
-                currentRow.appendChild(currentEvents);
-
-                var currentYear = document.createElement('td');
-                currentYear.appendChild(document.createTextNode(athleteData.year));
-                currentRow.appendChild(currentYear);
-
-                var currentGender = document.createElement('td');
-                currentGender.appendChild(document.createTextNode(athleteData.gender));
-                currentRow.appendChild(currentGender);
-
-                var currentBelt = document.createElement('td');
-                currentBelt.appendChild(document.createTextNode(athleteData.belt));
-                currentRow.appendChild(currentBelt);
-
-                var currentWeightDivision = document.createElement('td');
-                currentWeightDivision.appendChild(document.createTextNode(athleteData.weightDivision));
-                currentRow.appendChild(currentWeightDivision);
-
-                var currentWeight = document.createElement('td');
-                currentWeight.appendChild(document.createTextNode(athleteData.weight));
-                currentRow.appendChild(currentWeight);
-
-                var currentNotes = document.createElement('td');
-                currentNotes.appendChild(document.createTextNode(data.notes));
-                currentRow.appendChild(currentNotes);
-
-                data.textQuestionResponses.forEach(response => {
-                    var currentElt = document.createElement('td');
-                    currentElt.appendChild(document.createTextNode(response));
-                    currentRow.appendChild(currentElt);
-                })
-
-                data.checkboxQuestionResponses.forEach(response => {
-                    var currentElt = document.createElement('td');
-                    currentElt.appendChild(document.createTextNode(response));
-                    currentRow.appendChild(currentElt);
-                })
-
-                data.selectQuestionResponses.forEach(response => {
-                    var currentElt = document.createElement('td');
-                    currentElt.appendChild(document.createTextNode(response));
-                    currentRow.appendChild(currentElt);
-                })
+                var equipmentBuddy = [data.equipmentBuddyHogu, data.equipmentBuddyHelmet, 
+                    data.equipmentBuddyArmGuards, data.equipmentBuddyShinGuards, data.equipmentBuddyGloves, 
+                    data.equipmentBuddyFeetProtectors, data.equipmentBuddyESocks];
+                var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                    athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                var equipmentBuddyData = [athleteData.name];
+                for (var i = 0; i < equipmentBuddy.length; i++)
+                    equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                if (data.equipmentBuddy == 'needEquipmentBuddy')
+                    needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                else if (data.equipmentBuddy == 'canBeEquipmentBuddy')
+                    canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
-
-            registeredAthletesTable.appendChild(currentRow);
         });
     });
-    
-    tournamentBlock.appendChild(registeredAthletesTable);
 
     return tournamentBlock;
 }
