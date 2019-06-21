@@ -55,6 +55,10 @@ Note that you must use an email authorized by an existing admin to access the sy
 8. You can view the information of all athletes in the system on the "View Athletes" tab, including their emergency contact information and equipment sizes.
 9. You can add or remove admin emails on the "Manage Users" tab.
 
+## Built With
+
+* [Firebase](https://firebase.google.com/) - Mobile and web application development platform
+
 ## TODO
 
 * What happens if I remove non-MIT admin email?
