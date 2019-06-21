@@ -1,10 +1,10 @@
 # EZTourney
 
-Software for MIT Sport Taekwondo to ease the process of tournament registration for tournament coordinators. Athletes register using their MIT email address, admins with their authorized email addresses.
+Web app for MIT Sport Taekwondo to ease the process of tournament registration for tournament coordinators. Athletes register using their MIT email address, admins with their authorized email addresses.
 
 ## Software Description
 
-The software is located [here](https://eztourney.firebaseapp.com/). When a user registers, they will be directed to verify their email. Afterwards, athletes will see a list of athlete pages, admins will see a list of admin pages, and an admin who is also an athlete will see both.
+The web app is located [here](https://eztourney.firebaseapp.com/). When a user registers, they will be directed to verify their email. Afterwards, athletes will see a list of athlete pages, admins will see a list of admin pages, and an admin who is also an athlete will see both.
 
 ### Landing pages
 
