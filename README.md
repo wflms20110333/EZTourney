@@ -16,6 +16,7 @@ The web app is located [here](https://eztourney.firebaseapp.com/). When a user r
 * Reset password
 * Register for open tournaments
 * Edit personal information
+![Edit Information screen](screenshots/edit_information.png)
 * Edit equipment sizes
 
 ### Admin pages
@@ -25,6 +26,7 @@ The web app is located [here](https://eztourney.firebaseapp.com/). When a user r
 * Manage tournaments
 * View athletes
 * Manage users
+![Manage Users screen](screenshots/manage_users.png)
 
 ## Getting Started
 
