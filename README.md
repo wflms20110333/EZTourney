@@ -4,7 +4,7 @@ Web app for MIT Sport Taekwondo to ease the process of tournament registration f
 
 ## Software Description
 
-The web app is located [here](https://eztourney.firebaseapp.com/). When a user registers, they will be directed to verify their email. Afterwards, athletes will see a list of athlete pages, admins will see a list of admin pages, and an admin who is also an athlete will see both.
+The web app is located [here](https://eztourney.firebaseapp.com/). When a user registers, they will be directed to verify their email. Afterwards, athletes will see a list of athlete pages, admins will see a list of admin pages, and an admin who is also an athlete will see both. Below are lists of all the pages and select screenshots.
 
 ### Landing pages
 
