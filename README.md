@@ -30,7 +30,7 @@ The web app is located [here](https://eztourney.firebaseapp.com/). When a user r
 
 ## Getting Started
 
-These instructions will help any MIT athlete or authorized admin gain access to the system. In general, refresh the page to see any changes.
+These instructions will help any MIT athlete or authorized admin gain access to the system. In general, refresh the page to see any changes, and please refresh after any changes to make sure they are saved.
 
 ### Athletes
 
