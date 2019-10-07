@@ -395,7 +395,8 @@ function createTournamentManagementElement(tournamentData, path) {
     }
 
     // create registered athletes table
-    tournamentBlock.appendChild(createTextElement('h2', 'Registered Athletes'));
+    registeredAthletesTitle = createTextElement('h2', '');
+    tournamentBlock.appendChild(registeredAthletesTitle);
     var registeredAthletesTable = document.createElement('table');
     var headerData = ['Name', 'Events', 'Year', 'Gender', 'Belt', 'Weight Division', 'Weight', 'Notes'];
     tournamentData.textQuestions.forEach(question => { headerData.push(question); });
@@ -417,6 +418,7 @@ function createTournamentManagementElement(tournamentData, path) {
     tournamentBlock.appendChild(canBeEquipmentBuddyTable);
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
+        registeredAthletesTitle.innerHTML = 'Registered Athletes: ' + querySnapshot.size;
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             var data = doc.data();
