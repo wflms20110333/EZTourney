@@ -71,18 +71,26 @@ var createTournamentButtonElement = document.getElementById('createTournament');
 var removeAdminButtonElement = document.getElementById('removeAdmin');
 var addNewAdminButtonElement = document.getElementById('addNewAdmin');
 
-// Tournament registration elements
+// Tournament registration elements, need to reassign after load
 var openRegistrationTournamentDocName = ""; // need to assign later
 var eventsPoomsaeElement = document.getElementById('poomsae');
 var eventsSparringElement = document.getElementById('sparring');
-var equipmentBuddyElement = document.getElementById('equipmentBuddy');
-var equipmentBuddyHoguElement = document.getElementById('equipmentBuddyHogu');
-var equipmentBuddyHelmetElement = document.getElementById('equipmentBuddyHelmet');
-var equipmentBuddyArmGuardsElement = document.getElementById('equipmentBuddyArmGuards');
-var equipmentBuddyShinGuardsElement = document.getElementById('equipmentBuddyShinGuards');
-var equipmentBuddyGlovesElement = document.getElementById('equipmentBuddyGloves');
-var equipmentBuddyFeetProtectorsElement = document.getElementById('equipmentBuddyFeetProtectors');
-var equipmentBuddyESocksElement = document.getElementById('equipmentBuddyESocks');
+var needEquipmentBuddyElement = document.getElementById('needEquipmentBuddy');
+var needEquipmentBuddyHoguElement = document.getElementById('needEquipmentBuddyHogu');
+var needEquipmentBuddyHelmetElement = document.getElementById('needEquipmentBuddyHelmet');
+var needEquipmentBuddyArmGuardsElement = document.getElementById('needEquipmentBuddyArmGuards');
+var needEquipmentBuddyShinGuardsElement = document.getElementById('needEquipmentBuddyShinGuards');
+var needEquipmentBuddyGlovesElement = document.getElementById('needEquipmentBuddyGloves');
+var needEquipmentBuddyFeetProtectorsElement = document.getElementById('needEquipmentBuddyFeetProtectors');
+var needEquipmentBuddyESocksElement = document.getElementById('needEquipmentBuddyESocks');
+var canBeEquipmentBuddyElement = document.getElementById('canBeEquipmentBuddy');
+var canBeEquipmentBuddyHoguElement = document.getElementById('canBeEquipmentBuddyHogu');
+var canBeEquipmentBuddyHelmetElement = document.getElementById('canBeEquipmentBuddyHelmet');
+var canBeEquipmentBuddyArmGuardsElement = document.getElementById('canBeEquipmentBuddyArmGuards');
+var canBeEquipmentBuddyShinGuardsElement = document.getElementById('canBeEquipmentBuddyShinGuards');
+var canBeEquipmentBuddyGlovesElement = document.getElementById('canBeEquipmentBuddyGloves');
+var canBeEquipmentBuddyFeetProtectorsElement = document.getElementById('canBeEquipmentBuddyFeetProtectors');
+var canBeEquipmentBuddyESocksElement = document.getElementById('canBeEquipmentBuddyESocks');
 var tournamentRegistrationNotesElement = document.getElementById('tournamentRegistrationNotes');
 var tournamentRegistrationConfirmationElement = document.getElementById('confirmationStatement');
 

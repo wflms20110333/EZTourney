@@ -82,14 +82,22 @@ function loadOpenTournamentRegistrations() {
 function loadTournamentRegistrationElements() {
     eventsPoomsaeElement = document.getElementById('poomsae');
     eventsSparringElement = document.getElementById('sparring');
-    equipmentBuddyElement = document.getElementById('equipmentBuddy');
-    equipmentBuddyHoguElement = document.getElementById('equipmentBuddyHogu');
-    equipmentBuddyHelmetElement = document.getElementById('equipmentBuddyHelmet');
-    equipmentBuddyArmGuardsElement = document.getElementById('equipmentBuddyArmGuards');
-    equipmentBuddyShinGuardsElement = document.getElementById('equipmentBuddyShinGuards');
-    equipmentBuddyGlovesElement = document.getElementById('equipmentBuddyGloves');
-    equipmentBuddyFeetProtectorsElement = document.getElementById('equipmentBuddyFeetProtectors');
-    equipmentBuddyESocksElement = document.getElementById('equipmentBuddyESocks');
+    needEquipmentBuddyElement = document.getElementById('needEquipmentBuddy');
+    needEquipmentBuddyHoguElement = document.getElementById('needEquipmentBuddyHogu');
+    needEquipmentBuddyHelmetElement = document.getElementById('needEquipmentBuddyHelmet');
+    needEquipmentBuddyArmGuardsElement = document.getElementById('needEquipmentBuddyArmGuards');
+    needEquipmentBuddyShinGuardsElement = document.getElementById('needEquipmentBuddyShinGuards');
+    needEquipmentBuddyGlovesElement = document.getElementById('needEquipmentBuddyGloves');
+    needEquipmentBuddyFeetProtectorsElement = document.getElementById('needEquipmentBuddyFeetProtectors');
+    needEquipmentBuddyESocksElement = document.getElementById('needEquipmentBuddyESocks');
+    canBeEquipmentBuddyElement = document.getElementById('canBeEquipmentBuddy');
+    canBeEquipmentBuddyHoguElement = document.getElementById('canBeEquipmentBuddyHogu');
+    canBeEquipmentBuddyHelmetElement = document.getElementById('canBeEquipmentBuddyHelmet');
+    canBeEquipmentBuddyArmGuardsElement = document.getElementById('canBeEquipmentBuddyArmGuards');
+    canBeEquipmentBuddyShinGuardsElement = document.getElementById('canBeEquipmentBuddyShinGuards');
+    canBeEquipmentBuddyGlovesElement = document.getElementById('canBeEquipmentBuddyGloves');
+    canBeEquipmentBuddyFeetProtectorsElement = document.getElementById('canBeEquipmentBuddyFeetProtectors');
+    canBeEquipmentBuddyESocksElement = document.getElementById('canBeEquipmentBuddyESocks');
     tournamentRegistrationNotesElement = document.getElementById('tournamentRegistrationNotes');
     tournamentRegistrationConfirmationElement = document.getElementById('confirmationStatement');
 

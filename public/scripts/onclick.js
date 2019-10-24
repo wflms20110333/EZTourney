@@ -25,14 +25,22 @@ function registerForTournamentButtonClicked() {
     // retrieve values
     var poomsae = eventsPoomsaeElement.checked;
     var sparring = eventsSparringElement.checked;
-    var equipmentBuddy = equipmentBuddyElement.value;
-    var equipmentBuddyHogu = equipmentBuddyHoguElement.checked;
-    var equipmentBuddyHelmet = equipmentBuddyHelmetElement.checked;
-    var equipmentBuddyArmGuards = equipmentBuddyArmGuardsElement.checked;
-    var equipmentBuddyShinGuards = equipmentBuddyShinGuardsElement.checked;
-    var equipmentBuddyGloves = equipmentBuddyGlovesElement.checked;
-    var equipmentBuddyFeetProtectors = equipmentBuddyFeetProtectorsElement.checked;
-    var equipmentBuddyESocks = equipmentBuddyESocksElement.checked;
+    var needEquipmentBuddy = needEquipmentBuddyElement.checked;
+    var needEquipmentBuddyHogu = needEquipmentBuddyHoguElement.checked;
+    var needEquipmentBuddyHelmet = needEquipmentBuddyHelmetElement.checked;
+    var needEquipmentBuddyArmGuards = needEquipmentBuddyArmGuardsElement.checked;
+    var needEquipmentBuddyShinGuards = needEquipmentBuddyShinGuardsElement.checked;
+    var needEquipmentBuddyGloves = needEquipmentBuddyGlovesElement.checked;
+    var needEquipmentBuddyFeetProtectors = needEquipmentBuddyFeetProtectorsElement.checked;
+    var needEquipmentBuddyESocks = needEquipmentBuddyESocksElement.checked;
+    var canBeEquipmentBuddy = canBeEquipmentBuddyElement.checked;
+    var canBeEquipmentBuddyHogu = canBeEquipmentBuddyHoguElement.checked;
+    var canBeEquipmentBuddyHelmet = canBeEquipmentBuddyHelmetElement.checked;
+    var canBeEquipmentBuddyArmGuards = canBeEquipmentBuddyArmGuardsElement.checked;
+    var canBeEquipmentBuddyShinGuards = canBeEquipmentBuddyShinGuardsElement.checked;
+    var canBeEquipmentBuddyGloves = canBeEquipmentBuddyGlovesElement.checked;
+    var canBeEquipmentBuddyFeetProtectors = canBeEquipmentBuddyFeetProtectorsElement.checked;
+    var canBeEquipmentBuddyESocks = canBeEquipmentBuddyESocksElement.checked;
     var notes = tournamentRegistrationNotesElement.value;
     var confirmation = tournamentRegistrationConfirmationElement.checked;
 
@@ -59,14 +67,14 @@ function registerForTournamentButtonClicked() {
     }
 
     // check that equipment sizes are filled out
-    if (equipmentBuddy != "") {
-        if (equipmentBuddyHogu && hoguSizeElement.value == 0 ||
-            equipmentBuddyHelmet && helmetSizeElement.value == 0 ||
-            equipmentBuddyArmGuards && armGuardsSizeElement.value == 0 ||
-            equipmentBuddyShinGuards && shinGuardsSizeElement.value == 0 ||
-            equipmentBuddyGloves && glovesSizeElement.value == 0 ||
-            equipmentBuddyFeetProtectors && socksSizeElement.value == 0 ||
-            equipmentBuddyESocks && socksSizeElement.value == 0) {
+    if (needEquipmentBuddy || canBeEquipmentBuddy) {
+        if ((needEquipmentBuddyHogu || canBeEquipmentBuddyHogu) && hoguSizeElement.value == 0 ||
+            (needEquipmentBuddyHelmet || canBeEquipmentBuddyHelmet) && helmetSizeElement.value == 0 ||
+            (needEquipmentBuddyArmGuards || canBeEquipmentBuddyArmGuards) && armGuardsSizeElement.value == 0 ||
+            (needEquipmentBuddyShinGuards || canBeEquipmentBuddyShinGuards) && shinGuardsSizeElement.value == 0 ||
+            (needEquipmentBuddyGloves || canBeEquipmentBuddyGloves) && glovesSizeElement.value == 0 ||
+            (needEquipmentBuddyFeetProtectors || canBeEquipmentBuddyFeetProtectors) && socksSizeElement.value == 0 ||
+            (needEquipmentBuddyESocks || canBeEquipmentBuddyESocks) && socksSizeElement.value == 0) {
             snackbar("Please fill out sizes for checked equipment on the 'Equipment Sizes' tab");
             return;
         }
@@ -103,14 +111,22 @@ function registerForTournamentButtonClicked() {
         userUID: getUserUID(),
         poomsae: poomsae,
         sparring: sparring,
-        equipmentBuddy: equipmentBuddy,
-        equipmentBuddyHogu: equipmentBuddyHogu,
-        equipmentBuddyHelmet: equipmentBuddyHelmet,
-        equipmentBuddyArmGuards: equipmentBuddyArmGuards,
-        equipmentBuddyShinGuards: equipmentBuddyShinGuards,
-        equipmentBuddyGloves: equipmentBuddyGloves,
-        equipmentBuddyFeetProtectors: equipmentBuddyFeetProtectors,
-        equipmentBuddyESocks: equipmentBuddyESocks,
+        needEquipmentBuddy: needEquipmentBuddy,
+        needEquipmentBuddyHogu: needEquipmentBuddyHogu,
+        needEquipmentBuddyHelmet: needEquipmentBuddyHelmet,
+        needEquipmentBuddyArmGuards: needEquipmentBuddyArmGuards,
+        needEquipmentBuddyShinGuards: needEquipmentBuddyShinGuards,
+        needEquipmentBuddyGloves: needEquipmentBuddyGloves,
+        needEquipmentBuddyFeetProtectors: needEquipmentBuddyFeetProtectors,
+        needEquipmentBuddyESocks: needEquipmentBuddyESocks,
+        canBeEquipmentBuddy: canBeEquipmentBuddy,
+        canBeEquipmentBuddyHogu: canBeEquipmentBuddyHogu,
+        canBeEquipmentBuddyHelmet: canBeEquipmentBuddyHelmet,
+        canBeEquipmentBuddyArmGuards: canBeEquipmentBuddyArmGuards,
+        canBeEquipmentBuddyShinGuards: canBeEquipmentBuddyShinGuards,
+        canBeEquipmentBuddyGloves: canBeEquipmentBuddyGloves,
+        canBeEquipmentBuddyFeetProtectors: canBeEquipmentBuddyFeetProtectors,
+        canBeEquipmentBuddyESocks: canBeEquipmentBuddyESocks,
         notes: notes,
         textQuestionResponses: textQuestionResponses,
         checkboxQuestionResponses: checkboxQuestionResponses,

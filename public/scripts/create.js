@@ -184,91 +184,158 @@ function createTournamentRegistrationElement(tournamentData, registered, tournam
 
         inputForm.appendChild(events);
         
-        // need/can be an equipment buddy
-        var equipmentBuddy = document.createElement('div');
-        equipmentBuddy.setAttribute('class', 'formInput');
+        // need an equipment buddy
+        var needEquipmentBuddyWrapper = document.createElement('div');
+        needEquipmentBuddyWrapper.setAttribute('class', 'formInput');
 
-        var equipmentBuddyTitle = document.createElement('div');
-        equipmentBuddyTitle.setAttribute('class', 'inputLabel');
-        equipmentBuddyTitle.appendChild(document.createTextNode('Equipment Buddy?'));
-        equipmentBuddy.appendChild(equipmentBuddyTitle);
+        var needEquipmentBuddyTitle = document.createElement('div');
+        needEquipmentBuddyTitle.setAttribute('class', 'inputLabel');
+        needEquipmentBuddyTitle.appendChild(document.createTextNode('Need Equipment Buddy?'));
+        needEquipmentBuddyWrapper.appendChild(needEquipmentBuddyTitle);
 
-        var dropdown = document.createElement('select');
-        dropdown.setAttribute('id', 'equipmentBuddy');
+        var needEquipmentBuddy = document.createElement('input');
+        needEquipmentBuddy.setAttribute('id', 'needEquipmentBuddy');
+        needEquipmentBuddy.setAttribute('type', 'checkbox');
+        needEquipmentBuddyWrapper.appendChild(needEquipmentBuddy);
+        needEquipmentBuddyWrapper.appendChild(document.createTextNode(' Yes'));
+        needEquipmentBuddyWrapper.appendChild(document.createElement('br'));
 
-        var optionSelect = document.createElement('option');
-        optionSelect.setAttribute('selected', 'true');
-        optionSelect.setAttribute('value', '');
-        optionSelect.appendChild(document.createTextNode(' -- select an option -- '));
-        dropdown.appendChild(optionSelect);
+        // needEquipmentBuddy.setAttribute('value', 'needEquipmentBuddy');
+        // canBeEquipmentBuddy.setAttribute('value', 'canBeEquipmentBuddy');
 
-        var needEquipmentBuddy = document.createElement('option');
-        needEquipmentBuddy.setAttribute('value', 'needEquipmentBuddy');
-        needEquipmentBuddy.appendChild(document.createTextNode('Need an equipment buddy'));
-        dropdown.appendChild(needEquipmentBuddy);
+        inputForm.appendChild(needEquipmentBuddyWrapper);
 
-        var canBeEquipmentBuddy = document.createElement('option');
-        canBeEquipmentBuddy.setAttribute('value', 'canBeEquipmentBuddy');
-        canBeEquipmentBuddy.appendChild(document.createTextNode('Can be an equipment buddy'));
-        dropdown.appendChild(canBeEquipmentBuddy);
-
-        equipmentBuddy.appendChild(dropdown);
-
-        inputForm.appendChild(equipmentBuddy);
-
-        // which equipment needed/can lend out
+        // which equipment needed
         var equipment = document.createElement('div');
         equipment.setAttribute('class', 'formInput');
 
         var equipmentTitle = document.createElement('div');
         equipmentTitle.setAttribute('class', 'inputLabel');
-        equipmentTitle.appendChild(document.createTextNode('If you need/can be an equipment buddy, what do you need/can lend out?'));
+        equipmentTitle.appendChild(document.createTextNode('If you need an equipment buddy, what do you need?'));
         equipment.appendChild(equipmentTitle);
 
         var hogu = document.createElement('input');
-        hogu.setAttribute('id', 'equipmentBuddyHogu');
+        hogu.setAttribute('id', 'needEquipmentBuddyHogu');
         hogu.setAttribute('type', 'checkbox');
         equipment.appendChild(hogu);
         equipment.appendChild(document.createTextNode(' Hogu'));
         equipment.appendChild(document.createElement('br'));
 
         var helmet = document.createElement('input');
-        helmet.setAttribute('id', 'equipmentBuddyHelmet');
+        helmet.setAttribute('id', 'needEquipmentBuddyHelmet');
         helmet.setAttribute('type', 'checkbox');
         equipment.appendChild(helmet);
         equipment.appendChild(document.createTextNode(' Helmet'));
         equipment.appendChild(document.createElement('br'));
 
         var armGuards = document.createElement('input');
-        armGuards.setAttribute('id', 'equipmentBuddyArmGuards');
+        armGuards.setAttribute('id', 'needEquipmentBuddyArmGuards');
         armGuards.setAttribute('type', 'checkbox');
         equipment.appendChild(armGuards);
         equipment.appendChild(document.createTextNode(' Arm Guards'));
         equipment.appendChild(document.createElement('br'));
 
         var shinGuards = document.createElement('input');
-        shinGuards.setAttribute('id', 'equipmentBuddyShinGuards');
+        shinGuards.setAttribute('id', 'needEquipmentBuddyShinGuards');
         shinGuards.setAttribute('type', 'checkbox');
         equipment.appendChild(shinGuards);
         equipment.appendChild(document.createTextNode(' Shin Guards'));
         equipment.appendChild(document.createElement('br'));
 
         var gloves = document.createElement('input');
-        gloves.setAttribute('id', 'equipmentBuddyGloves');
+        gloves.setAttribute('id', 'needEquipmentBuddyGloves');
         gloves.setAttribute('type', 'checkbox');
         equipment.appendChild(gloves);
         equipment.appendChild(document.createTextNode(' Gloves'));
         equipment.appendChild(document.createElement('br'));
 
         var feetProtectors = document.createElement('input');
-        feetProtectors.setAttribute('id', 'equipmentBuddyFeetProtectors');
+        feetProtectors.setAttribute('id', 'needEquipmentBuddyFeetProtectors');
         feetProtectors.setAttribute('type', 'checkbox');
         equipment.appendChild(feetProtectors);
         equipment.appendChild(document.createTextNode(' Feet Protectors'));
         equipment.appendChild(document.createElement('br'));
 
         var eSocks = document.createElement('input');
-        eSocks.setAttribute('id', 'equipmentBuddyESocks');
+        eSocks.setAttribute('id', 'needEquipmentBuddyESocks');
+        eSocks.setAttribute('type', 'checkbox');
+        equipment.appendChild(eSocks);
+        equipment.appendChild(document.createTextNode(' Daedo E-Socks'));
+        equipment.appendChild(document.createElement('br'));
+
+        inputForm.appendChild(equipment);
+
+        // can be an equipment buddy
+        var canBeEquipmentBuddyWrapper = document.createElement('div');
+        canBeEquipmentBuddyWrapper.setAttribute('class', 'formInput');
+
+        var canBeEquipmentBuddyTitle = document.createElement('div');
+        canBeEquipmentBuddyTitle.setAttribute('class', 'inputLabel');
+        canBeEquipmentBuddyTitle.appendChild(document.createTextNode('Can Be Equipment Buddy?'));
+        canBeEquipmentBuddyWrapper.appendChild(canBeEquipmentBuddyTitle);
+
+        var canBeEquipmentBuddy = document.createElement('input');
+        canBeEquipmentBuddy.setAttribute('id', 'canBeEquipmentBuddy');
+        canBeEquipmentBuddy.setAttribute('type', 'checkbox');
+        canBeEquipmentBuddyWrapper.appendChild(canBeEquipmentBuddy);
+        canBeEquipmentBuddyWrapper.appendChild(document.createTextNode(' Yes'));
+        canBeEquipmentBuddyWrapper.appendChild(document.createElement('br'));
+
+        inputForm.appendChild(canBeEquipmentBuddyWrapper);
+
+        // which equipment can lend out
+        var equipment = document.createElement('div');
+        equipment.setAttribute('class', 'formInput');
+
+        var equipmentTitle = document.createElement('div');
+        equipmentTitle.setAttribute('class', 'inputLabel');
+        equipmentTitle.appendChild(document.createTextNode('If you can be an equipment buddy, what can you lend out?'));
+        equipment.appendChild(equipmentTitle);
+
+        var hogu = document.createElement('input');
+        hogu.setAttribute('id', 'canBeEquipmentBuddyHogu');
+        hogu.setAttribute('type', 'checkbox');
+        equipment.appendChild(hogu);
+        equipment.appendChild(document.createTextNode(' Hogu'));
+        equipment.appendChild(document.createElement('br'));
+
+        var helmet = document.createElement('input');
+        helmet.setAttribute('id', 'canBeEquipmentBuddyHelmet');
+        helmet.setAttribute('type', 'checkbox');
+        equipment.appendChild(helmet);
+        equipment.appendChild(document.createTextNode(' Helmet'));
+        equipment.appendChild(document.createElement('br'));
+
+        var armGuards = document.createElement('input');
+        armGuards.setAttribute('id', 'canBeEquipmentBuddyArmGuards');
+        armGuards.setAttribute('type', 'checkbox');
+        equipment.appendChild(armGuards);
+        equipment.appendChild(document.createTextNode(' Arm Guards'));
+        equipment.appendChild(document.createElement('br'));
+
+        var shinGuards = document.createElement('input');
+        shinGuards.setAttribute('id', 'canBeEquipmentBuddyShinGuards');
+        shinGuards.setAttribute('type', 'checkbox');
+        equipment.appendChild(shinGuards);
+        equipment.appendChild(document.createTextNode(' Shin Guards'));
+        equipment.appendChild(document.createElement('br'));
+
+        var gloves = document.createElement('input');
+        gloves.setAttribute('id', 'canBeEquipmentBuddyGloves');
+        gloves.setAttribute('type', 'checkbox');
+        equipment.appendChild(gloves);
+        equipment.appendChild(document.createTextNode(' Gloves'));
+        equipment.appendChild(document.createElement('br'));
+
+        var feetProtectors = document.createElement('input');
+        feetProtectors.setAttribute('id', 'canBeEquipmentBuddyFeetProtectors');
+        feetProtectors.setAttribute('type', 'checkbox');
+        equipment.appendChild(feetProtectors);
+        equipment.appendChild(document.createTextNode(' Feet Protectors'));
+        equipment.appendChild(document.createElement('br'));
+
+        var eSocks = document.createElement('input');
+        eSocks.setAttribute('id', 'canBeEquipmentBuddyESocks');
         eSocks.setAttribute('type', 'checkbox');
         equipment.appendChild(eSocks);
         equipment.appendChild(document.createTextNode(' Daedo E-Socks'));
@@ -443,18 +510,44 @@ function createTournamentManagementElement(tournamentData, path) {
                 data.selectQuestionResponses.forEach(response => { rowData.push(response); });
                 registeredAthletesTable.appendChild(createTableRow(false, rowData));
 
-                var equipmentBuddy = [data.equipmentBuddyHogu, data.equipmentBuddyHelmet, 
-                    data.equipmentBuddyArmGuards, data.equipmentBuddyShinGuards, data.equipmentBuddyGloves, 
-                    data.equipmentBuddyFeetProtectors, data.equipmentBuddyESocks];
-                var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
-                    athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
-                var equipmentBuddyData = [athleteData.name];
-                for (var i = 0; i < equipmentBuddy.length; i++)
-                    equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
-                if (data.equipmentBuddy == 'needEquipmentBuddy')
-                    needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
-                else if (data.equipmentBuddy == 'canBeEquipmentBuddy')
-                    canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                // back compatibility
+                if (data.equipmentBuddy == 'needEquipmentBuddy' || data.equipmentBuddy == 'canBeEquipmentBuddy') {
+                    var equipmentBuddy = [data.equipmentBuddyHogu, data.equipmentBuddyHelmet, 
+                        data.equipmentBuddyArmGuards, data.equipmentBuddyShinGuards, data.equipmentBuddyGloves, 
+                        data.equipmentBuddyFeetProtectors, data.equipmentBuddyESocks];
+                    var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                        athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                    var equipmentBuddyData = [athleteData.name];
+                    for (var i = 0; i < equipmentBuddy.length; i++)
+                        equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                    if (data.equipmentBuddy == 'needEquipmentBuddy')
+                        needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                    else if (data.equipmentBuddy == 'canBeEquipmentBuddy')
+                        canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                } else { // new stuff
+                    if (data.needEquipmentBuddy) {
+                        var equipmentBuddy = [data.needEquipmentBuddyHogu, data.needEquipmentBuddyHelmet, 
+                            data.needEquipmentBuddyArmGuards, data.needEquipmentBuddyShinGuards, data.needEquipmentBuddyGloves, 
+                            data.needEquipmentBuddyFeetProtectors, data.needEquipmentBuddyESocks];
+                        var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                            athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                        var equipmentBuddyData = [athleteData.name];
+                        for (var i = 0; i < equipmentBuddy.length; i++)
+                            equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                        needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                    }
+                    if (data.canBeEquipmentBuddy) {
+                        var equipmentBuddy = [data.canBeEquipmentBuddyHogu, data.canBeEquipmentBuddyHelmet, 
+                            data.canBeEquipmentBuddyArmGuards, data.canBeEquipmentBuddyShinGuards, data.canBeEquipmentBuddyGloves, 
+                            data.canBeEquipmentBuddyFeetProtectors, data.canBeEquipmentBuddyESocks];
+                        var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                            athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                        var equipmentBuddyData = [athleteData.name];
+                        for (var i = 0; i < equipmentBuddy.length; i++)
+                            equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                        canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                    }
+                }
             }).catch(function(error) {
                 console.log("Error getting document:", error);
             });
