@@ -486,6 +486,8 @@ function createTournamentManagementElement(tournamentData, path) {
     
     firestore.collection(path + 'registeredAthletes').get().then(function(querySnapshot) {
         registeredAthletesTitle.innerHTML = 'Registered Athletes: ' + querySnapshot.size;
+        var semaphore = querySnapshot.size; // tracks the number of registrations to be processed
+        var registeredAthleteElements = []; // HTML elements for registrations
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             var data = doc.data();
@@ -508,7 +510,21 @@ function createTournamentManagementElement(tournamentData, path) {
                 data.textQuestionResponses.forEach(response => { rowData.push(response); });
                 data.checkboxQuestionResponses.forEach(response => { rowData.push(response); });
                 data.selectQuestionResponses.forEach(response => { rowData.push(response); });
-                registeredAthletesTable.appendChild(createTableRow(false, rowData));
+                // registeredAthletesTable.appendChild(createTableRow(false, rowData));
+                var timestamp = data.timestamp ? data.timestamp : 0; // all timestamps should be > 0
+                registeredAthleteElements[registeredAthleteElements.length] = [createTableRow(false, rowData), timestamp];
+                semaphore--;
+                // if all registration elements have been created
+                if (semaphore == 0) {
+                    // sort by timestamp
+                    registeredAthleteElements.sort(function(first, second) {
+                        return first[1] - second[1];
+                    });
+                    // append all to registered athletes table
+                    registeredAthleteElements.forEach(function(x) {
+                        registeredAthletesTable.appendChild(x[0]);
+                    });
+                }
 
                 // back compatibility
                 if (data.equipmentBuddy == 'needEquipmentBuddy' || data.equipmentBuddy == 'canBeEquipmentBuddy') {

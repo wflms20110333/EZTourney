@@ -106,36 +106,40 @@ function registerForTournamentButtonClicked() {
         selectQuestionResponses.push(selectResponses[i].children[1].value);
     
     // submit data
-    var tournamentsRef = firestore.collection("tournaments");
-    tournamentsRef.doc(openRegistrationTournamentDocName).collection('registeredAthletes').doc(getUserUID()).set({
-        userUID: getUserUID(),
-        poomsae: poomsae,
-        sparring: sparring,
-        needEquipmentBuddy: needEquipmentBuddy,
-        needEquipmentBuddyHogu: needEquipmentBuddyHogu,
-        needEquipmentBuddyHelmet: needEquipmentBuddyHelmet,
-        needEquipmentBuddyArmGuards: needEquipmentBuddyArmGuards,
-        needEquipmentBuddyShinGuards: needEquipmentBuddyShinGuards,
-        needEquipmentBuddyGloves: needEquipmentBuddyGloves,
-        needEquipmentBuddyFeetProtectors: needEquipmentBuddyFeetProtectors,
-        needEquipmentBuddyESocks: needEquipmentBuddyESocks,
-        canBeEquipmentBuddy: canBeEquipmentBuddy,
-        canBeEquipmentBuddyHogu: canBeEquipmentBuddyHogu,
-        canBeEquipmentBuddyHelmet: canBeEquipmentBuddyHelmet,
-        canBeEquipmentBuddyArmGuards: canBeEquipmentBuddyArmGuards,
-        canBeEquipmentBuddyShinGuards: canBeEquipmentBuddyShinGuards,
-        canBeEquipmentBuddyGloves: canBeEquipmentBuddyGloves,
-        canBeEquipmentBuddyFeetProtectors: canBeEquipmentBuddyFeetProtectors,
-        canBeEquipmentBuddyESocks: canBeEquipmentBuddyESocks,
-        notes: notes,
-        textQuestionResponses: textQuestionResponses,
-        checkboxQuestionResponses: checkboxQuestionResponses,
-        selectQuestionResponses: selectQuestionResponses
-    }).then(function() {
-        snackbar('Successfully registered for tournament!');
-        setTimeout(function(){ location.reload(); }, 3000);
-    }).catch(function(error) {
-        console.error("Error writing new athlete's registration information to Firebase Database", error);
+    var registeredAthletesRef = firestore.collection("tournaments").doc(openRegistrationTournamentDocName).collection('registeredAthletes');
+    registeredAthletesRef.get().then(snap => {
+        var timestamp = snap.size + 1; // must be > 0
+        registeredAthletesRef.doc(getUserUID()).set({
+            userUID: getUserUID(),
+            poomsae: poomsae,
+            sparring: sparring,
+            needEquipmentBuddy: needEquipmentBuddy,
+            needEquipmentBuddyHogu: needEquipmentBuddyHogu,
+            needEquipmentBuddyHelmet: needEquipmentBuddyHelmet,
+            needEquipmentBuddyArmGuards: needEquipmentBuddyArmGuards,
+            needEquipmentBuddyShinGuards: needEquipmentBuddyShinGuards,
+            needEquipmentBuddyGloves: needEquipmentBuddyGloves,
+            needEquipmentBuddyFeetProtectors: needEquipmentBuddyFeetProtectors,
+            needEquipmentBuddyESocks: needEquipmentBuddyESocks,
+            canBeEquipmentBuddy: canBeEquipmentBuddy,
+            canBeEquipmentBuddyHogu: canBeEquipmentBuddyHogu,
+            canBeEquipmentBuddyHelmet: canBeEquipmentBuddyHelmet,
+            canBeEquipmentBuddyArmGuards: canBeEquipmentBuddyArmGuards,
+            canBeEquipmentBuddyShinGuards: canBeEquipmentBuddyShinGuards,
+            canBeEquipmentBuddyGloves: canBeEquipmentBuddyGloves,
+            canBeEquipmentBuddyFeetProtectors: canBeEquipmentBuddyFeetProtectors,
+            canBeEquipmentBuddyESocks: canBeEquipmentBuddyESocks,
+            notes: notes,
+            textQuestionResponses: textQuestionResponses,
+            checkboxQuestionResponses: checkboxQuestionResponses,
+            selectQuestionResponses: selectQuestionResponses,
+            timestamp: timestamp
+        }).then(function() {
+            snackbar('Successfully registered for tournament!');
+            setTimeout(function(){ location.reload(); }, 3000);
+        }).catch(function(error) {
+            console.error("Error writing new athlete's registration information to Firebase Database", error);
+        });
     });
 }
 
