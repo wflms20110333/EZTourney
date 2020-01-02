@@ -61,8 +61,6 @@ Note that you must use an email authorized by an existing admin to access the sy
 
 * [Firebase](https://firebase.google.com/) - Mobile and web application development platform
 
-## TODO
+## Developer Notes
 
-* What happens if I remove non-MIT admin email?
-* Make custom form elements required
-* Show registered list for athletes
+To launch a local server, run `firebase serve --only hosting`.
