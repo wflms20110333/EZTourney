@@ -64,3 +64,4 @@ Note that you must use an email authorized by an existing admin to access the sy
 ## Developer Notes
 
 To launch a local server, run `firebase serve --only hosting`.
+To deploy, run `firebase deploy`.
