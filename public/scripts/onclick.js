@@ -107,8 +107,19 @@ function registerForTournamentButtonClicked() {
     
     // submit data
     var registeredAthletesRef = firestore.collection("tournaments").doc(openRegistrationTournamentDocName).collection('registeredAthletes');
-    registeredAthletesRef.get().then(snap => {
-        var timestamp = snap.size + 1; // must be > 0
+    registeredAthletesRef.doc('sharedInfo').get().then(function(doc) {
+        var timestamp = 1;
+        if (doc.exists) {
+            // retrieve the document's data
+            var data = doc.data();
+            // get timestamp, the order in which the athlete registered
+            timestamp = (data.timestamp == null ? 0 : data.timestamp) + 1;
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document: tournaments/" + openRegistrationTournamentDocName + "/registeredAthletes/sharedInfo");
+        }
+
+        // send registration information to database
         registeredAthletesRef.doc(getUserUID()).set({
             userUID: getUserUID(),
             poomsae: poomsae,
@@ -135,11 +146,24 @@ function registerForTournamentButtonClicked() {
             selectQuestionResponses: selectQuestionResponses,
             timestamp: timestamp
         }).then(function() {
+            // snackbar
             snackbar('Successfully registered for tournament!');
+            // update timestamp/number of registered athletes
+            registeredAthletesRef.doc('sharedInfo').set({
+                timestamp: timestamp
+            }).then(function() {
+                console.log('Successfully updated timestamp in sharedInfo');
+            }).catch(function(error){
+                console.log('Was not able to update timestamp in sharedInfo');
+                console.log(error);
+            });
+            // reload page
             setTimeout(function(){ location.reload(); }, 3000);
         }).catch(function(error) {
             console.error("Error writing new athlete's registration information to Firebase Database", error);
         });
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
     });
 }
 
@@ -332,7 +356,7 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         contact: contact,
         textQuestions: textQuestions,
         checkboxQuestions: checkboxQuestions,
-        selectQuestions: selectQuestions
+        selectQuestions: selectQuestions,
     }).then(function() {
         var success = true;
         var keyIt = checkboxChoices.keys();

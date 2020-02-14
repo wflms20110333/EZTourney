@@ -489,32 +489,10 @@ function createTournamentManagementElement(tournamentData, path) {
         var semaphore = querySnapshot.size; // tracks the number of registrations to be processed
         var registeredAthleteElements = []; // HTML elements for registrations
         querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            var data = doc.data();
-
-            // create event string
-            var events = "";
-            if (data.poomsae && data.sparring)
-                events = "poomsae, sparring";
-            else if (data.poomsae)
-                events = "poomsae";
-            else
-                events = "sparring";
-
-            // adds information of athlete
-            firestore.doc('/athletes/' + doc.id).get().then(function(doc) {
-                // retrieve the document's data
-                var athleteData = doc.data();
-                var rowData = [athleteData.name, events, athleteData.year, athleteData.gender, athleteData.belt, 
-                    athleteData.weightDivision, athleteData.weight, data.notes];
-                data.textQuestionResponses.forEach(response => { rowData.push(response); });
-                data.checkboxQuestionResponses.forEach(response => { rowData.push(response); });
-                data.selectQuestionResponses.forEach(response => { rowData.push(response); });
-                // registeredAthletesTable.appendChild(createTableRow(false, rowData));
-                var timestamp = data.timestamp ? data.timestamp : 0; // all timestamps should be > 0
-                registeredAthleteElements[registeredAthleteElements.length] = [createTableRow(false, rowData), timestamp];
+            if (doc.id == 'sharedInfo') {
+                registeredAthletesTitle.innerHTML = 'Registered Athletes: ' + (querySnapshot.size - 1);
                 semaphore--;
-                // if all registration elements have been created
+                // this part is redundant, put in a method later?
                 if (semaphore == 0) {
                     // sort by timestamp
                     registeredAthleteElements.sort(function(first, second) {
@@ -525,48 +503,86 @@ function createTournamentManagementElement(tournamentData, path) {
                         registeredAthletesTable.appendChild(x[0]);
                     });
                 }
+            } else {
+                // doc.data() is never undefined for query doc snapshots
+                var data = doc.data();
 
-                // back compatibility
-                if (data.equipmentBuddy == 'needEquipmentBuddy' || data.equipmentBuddy == 'canBeEquipmentBuddy') {
-                    var equipmentBuddy = [data.equipmentBuddyHogu, data.equipmentBuddyHelmet, 
-                        data.equipmentBuddyArmGuards, data.equipmentBuddyShinGuards, data.equipmentBuddyGloves, 
-                        data.equipmentBuddyFeetProtectors, data.equipmentBuddyESocks];
-                    var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
-                        athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
-                    var equipmentBuddyData = [athleteData.name];
-                    for (var i = 0; i < equipmentBuddy.length; i++)
-                        equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
-                    if (data.equipmentBuddy == 'needEquipmentBuddy')
-                        needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
-                    else if (data.equipmentBuddy == 'canBeEquipmentBuddy')
-                        canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
-                } else { // new stuff
-                    if (data.needEquipmentBuddy) {
-                        var equipmentBuddy = [data.needEquipmentBuddyHogu, data.needEquipmentBuddyHelmet, 
-                            data.needEquipmentBuddyArmGuards, data.needEquipmentBuddyShinGuards, data.needEquipmentBuddyGloves, 
-                            data.needEquipmentBuddyFeetProtectors, data.needEquipmentBuddyESocks];
+                // create event string
+                var events = "";
+                if (data.poomsae && data.sparring)
+                    events = "poomsae, sparring";
+                else if (data.poomsae)
+                    events = "poomsae";
+                else
+                    events = "sparring";
+
+                // adds information of athlete
+                firestore.doc('/athletes/' + doc.id).get().then(function(doc) {
+                    // retrieve the document's data
+                    var athleteData = doc.data();
+                    var rowData = [athleteData.name, events, athleteData.year, athleteData.gender, athleteData.belt, 
+                        athleteData.weightDivision, athleteData.weight, data.notes];
+                    data.textQuestionResponses.forEach(response => { rowData.push(response); });
+                    data.checkboxQuestionResponses.forEach(response => { rowData.push(response); });
+                    data.selectQuestionResponses.forEach(response => { rowData.push(response); });
+                    // registeredAthletesTable.appendChild(createTableRow(false, rowData));
+                    var timestamp = data.timestamp ? data.timestamp : 0; // all timestamps should be > 0
+                    registeredAthleteElements[registeredAthleteElements.length] = [createTableRow(false, rowData), timestamp];
+                    semaphore--;
+                    // if all registration elements have been created
+                    if (semaphore == 0) {
+                        // sort by timestamp
+                        registeredAthleteElements.sort(function(first, second) {
+                            return first[1] - second[1];
+                        });
+                        // append all to registered athletes table
+                        registeredAthleteElements.forEach(function(x) {
+                            registeredAthletesTable.appendChild(x[0]);
+                        });
+                    }
+
+                    // back compatibility
+                    if (data.equipmentBuddy == 'needEquipmentBuddy' || data.equipmentBuddy == 'canBeEquipmentBuddy') {
+                        var equipmentBuddy = [data.equipmentBuddyHogu, data.equipmentBuddyHelmet, 
+                            data.equipmentBuddyArmGuards, data.equipmentBuddyShinGuards, data.equipmentBuddyGloves, 
+                            data.equipmentBuddyFeetProtectors, data.equipmentBuddyESocks];
                         var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
                             athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
                         var equipmentBuddyData = [athleteData.name];
                         for (var i = 0; i < equipmentBuddy.length; i++)
                             equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
-                        needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                        if (data.equipmentBuddy == 'needEquipmentBuddy')
+                            needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                        else if (data.equipmentBuddy == 'canBeEquipmentBuddy')
+                            canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                    } else { // new stuff
+                        if (data.needEquipmentBuddy) {
+                            var equipmentBuddy = [data.needEquipmentBuddyHogu, data.needEquipmentBuddyHelmet, 
+                                data.needEquipmentBuddyArmGuards, data.needEquipmentBuddyShinGuards, data.needEquipmentBuddyGloves, 
+                                data.needEquipmentBuddyFeetProtectors, data.needEquipmentBuddyESocks];
+                            var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                                athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                            var equipmentBuddyData = [athleteData.name];
+                            for (var i = 0; i < equipmentBuddy.length; i++)
+                                equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                            needEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                        }
+                        if (data.canBeEquipmentBuddy) {
+                            var equipmentBuddy = [data.canBeEquipmentBuddyHogu, data.canBeEquipmentBuddyHelmet, 
+                                data.canBeEquipmentBuddyArmGuards, data.canBeEquipmentBuddyShinGuards, data.canBeEquipmentBuddyGloves, 
+                                data.canBeEquipmentBuddyFeetProtectors, data.canBeEquipmentBuddyESocks];
+                            var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
+                                athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
+                            var equipmentBuddyData = [athleteData.name];
+                            for (var i = 0; i < equipmentBuddy.length; i++)
+                                equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
+                            canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
+                        }
                     }
-                    if (data.canBeEquipmentBuddy) {
-                        var equipmentBuddy = [data.canBeEquipmentBuddyHogu, data.canBeEquipmentBuddyHelmet, 
-                            data.canBeEquipmentBuddyArmGuards, data.canBeEquipmentBuddyShinGuards, data.canBeEquipmentBuddyGloves, 
-                            data.canBeEquipmentBuddyFeetProtectors, data.canBeEquipmentBuddyESocks];
-                        var equipmentSizes = [athleteData.hoguSize, athleteData.helmetSize, athleteData.armGuardsSize, 
-                            athleteData.shinGuardsSize, athleteData.glovesSize, athleteData.socksSize, athleteData.socksSize];
-                        var equipmentBuddyData = [athleteData.name];
-                        for (var i = 0; i < equipmentBuddy.length; i++)
-                            equipmentBuddyData.push(equipmentBuddy[i] ? equipmentSizes[i] : '');
-                        canBeEquipmentBuddyTable.appendChild(createTableRow(false, equipmentBuddyData));
-                    }
-                }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
-            });
+                }).catch(function(error) {
+                    console.log("Error getting document:", error);
+                });
+            }
         });
     });
 
