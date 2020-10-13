@@ -65,3 +65,10 @@ Note that you must use an email authorized by an existing admin to access the sy
 
 To launch a local server, run `firebase serve --only hosting`.
 To deploy, run `firebase deploy`.
+
+If there is the error message `Error: Failed to get Firebase project eztourney. Please make sure the project exists and your account has permission to access it.`, run the following:
+```
+firebase logout
+firebase login
+firebase deploy
+```
