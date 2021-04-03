@@ -18,7 +18,7 @@ function createDisplayMessageElement(message) {
     return displayBlock;
 }
 
-// Creates an element for adding text input on form
+// Creates an element for adding text input on form (registration page?)
 function createTextInputElement(title, className) {
     var elt = document.createElement('div');
     elt.setAttribute('class', 'formInput');
@@ -36,7 +36,7 @@ function createTextInputElement(title, className) {
     return elt;
 }
 
-// Creates an element for adding checkbox input on form
+// Creates an element for adding multiple choice input on form
 function createMultipleChoiceInputCreationElement(numChoices, className, text) {
     var elt = document.createElement('div');
     elt.setAttribute('class', 'formInput ' + className);
@@ -48,7 +48,7 @@ function createMultipleChoiceInputCreationElement(numChoices, className, text) {
     return elt;
 }
 
-// Creates an element for checkbox input
+// Creates an element for checkbox input on registration page
 function createCheckboxInputElement(question, arr, className) {
     var elt = document.createElement('div');
     elt.setAttribute('class', 'formInput ' + className);
@@ -70,7 +70,7 @@ function createCheckboxInputElement(question, arr, className) {
     return elt;
 }
 
-// Creates an element for select input
+// Creates an element for select input on registration page
 function createSelectInputElement(question, arr, className) {
     var elt = document.createElement('div');
     elt.setAttribute('class', 'formInput ' + className);
@@ -389,18 +389,16 @@ function createTournamentRegistrationElement(tournamentData, registered, tournam
         inputForm.appendChild(submitButton);
 
         // optional checkbox form elements
-        tournamentData.checkboxQuestions.forEach(question => {
-            firestore.doc(tournamentDocPath + '/checkboxQuestions/' + concatenateString(question.split(" "))).get().then(function(doc) {
-                inputForm.insertBefore(createCheckboxInputElement(question, doc.data().choices, 'optionalCheckboxInput'), reminder);
-            });
-        });
+        for (var question in tournamentData.checkboxQuestions) {
+            var choices = tournamentData.checkboxQuestions[question];
+            inputForm.insertBefore(createCheckboxInputElement(question, choices, 'optionalCheckboxInput'), reminder);
+        }
 
         // optional select form elements
-        tournamentData.selectQuestions.forEach(question => {
-            firestore.doc(tournamentDocPath + '/selectQuestions/' + concatenateString(question.split(" "))).get().then(function(doc) {
-                inputForm.insertBefore(createSelectInputElement(question, doc.data().choices, 'optionalSelectInput'), reminder);
-            });
-        });
+        for (var question in tournamentData.selectQuestions) {
+            var choices = tournamentData.selectQuestions[question];
+            inputForm.insertBefore(createSelectInputElement(question, choices, 'optionalSelectInput'), reminder);
+        }
     } else {
         var alreadyRegistered = document.createElement('div');
         alreadyRegistered.appendChild(document.createTextNode('You have already registered for this tournament! Contact the organizer to make changes to your registration.'));
@@ -467,8 +465,8 @@ function createTournamentManagementElement(tournamentData, path) {
     var registeredAthletesTable = document.createElement('table');
     var headerData = ['Name', 'Events', 'Year', 'Gender', 'Belt', 'Weight Division', 'Weight', 'Notes'];
     tournamentData.textQuestions.forEach(question => { headerData.push(question); });
-    tournamentData.checkboxQuestions.forEach(question => { headerData.push(question); });
-    tournamentData.selectQuestions.forEach(question => { headerData.push(question); });
+    Object.keys(tournamentData.checkboxQuestions).forEach(question => { headerData.push(question); });
+    Object.keys(tournamentData.selectQuestions).forEach(question => { headerData.push(question); });
     registeredAthletesTable.appendChild(createTableRow(true, headerData));
     tournamentBlock.appendChild(registeredAthletesTable);
 

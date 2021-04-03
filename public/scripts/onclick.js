@@ -303,40 +303,62 @@ function createTournamentButtonClicked() {
         var question = questionsElements[i].value;
         if (question != "")
             textQuestions.push(question);
+        else {
+            snackbar('Please fill out all text questions');
+            return;
+        }
     }
 
-    var checkboxQuestions = [];
-    var checkboxChoices = new Map();
+    var checkboxQuestions = {};
     questionsElements = document.getElementsByClassName('checkboxCreation');
     for (var i = 0; i < questionsElements.length; i++) {
         var children = questionsElements[i].children;
+        var question = children[0].children[1].value;
+        if (question == "") {
+            snackbar('Please fill out all checkbox questions');
+            return;
+        }
         var arr = [];
-        for (var j = 1; j < children.length; j++)
-            arr.push(children[j].children[1].value);
-        checkboxChoices.set(children[0].children[1].value, arr);
-        checkboxQuestions.push(children[0].children[1].value);
+        for (var j = 1; j < children.length; j++) {
+            var choice = children[j].children[1].value;
+            if (choice == "") {
+                snackbar('Please fill out all checkbox choices');
+                return;
+            }
+            arr.push(choice);
+        }
+        checkboxQuestions[question] = arr;
     }
 
-    var selectQuestions = [];
-    var selectChoices = new Map();
+    var selectQuestions = {};
     questionsElements = document.getElementsByClassName('selectCreation');
     for (var i = 0; i < questionsElements.length; i++) {
         var children = questionsElements[i].children;
+        var question = children[0].children[1].value;
+        if (question == "") {
+            snackbar('Please fill out all select questions');
+            return;
+        }
         var arr = [];
-        for (var j = 1; j < children.length; j++)
-            arr.push(children[j].children[1].value);
-        selectChoices.set(children[0].children[1].value, arr);
-        selectQuestions.push(children[0].children[1].value);
+        for (var j = 1; j < children.length; j++) {
+            var choice = children[j].children[1].value;
+            if (choice == "") {
+                snackbar('Please fill out all select choices');
+                return;
+            }
+            arr.push(choice);
+        }
+        selectQuestions[question] = arr;
     }
 
     // submit data
     addTournamentToDatabase(tournamentName, tournamentMessage, tournamentDate, tournamentSignUpDueDate, tournamentFees, 
-        tournamentContact, textQuestions, checkboxQuestions, checkboxChoices, selectQuestions, selectChoices);
+        tournamentContact, textQuestions, checkboxQuestions, selectQuestions);
 }
 
 // Adds a tournament to the database
 function addTournamentToDatabase(name, message, date, signUpDueDate, fees, contact, textQuestions, 
-    checkboxQuestions, checkboxChoices, selectQuestions, selectChoices) {
+    checkboxQuestions, selectQuestions) {
     // create tournament's document name
     name = name.trim();
     var tournamentDocName = date + "_" + concatenateString(name.split(/\s+/));
@@ -359,6 +381,7 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
         selectQuestions: selectQuestions,
     }).then(function() {
         var success = true;
+        /* OLD IMPLEMENTATION OF STORING CHECKBOX/SELECT CHOICES
         var keyIt = checkboxChoices.keys();
         var key = keyIt.next();
         while (!key.done) {
@@ -383,6 +406,7 @@ function addTournamentToDatabase(name, message, date, signUpDueDate, fees, conta
             });
             key = keyIt.next();
         }
+        */
         // this actually probably doesn't work -- the database queries are slow and a separate thread
         if (success) {
             snackbar("Tournament successfully created and open for registration!");
